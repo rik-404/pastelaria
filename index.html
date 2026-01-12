@@ -20,7 +20,7 @@
                     <h1>Pastelaria Itoman</h1>
                     <p class="slogan">Qualidade desde 1980</p>
                     <p class="tagline">Pastéis frescos, crocantes e irresistíveis</p>
-                    <p class="contact-info">Piracicaba - SP | <i class="fas fa-phone"></i> (19) 99245-0000</p>
+                    <p class="contact-info">Piracicaba - SP | <i class="fas fa-phone"></i> <span id="header-phone">(19) 99245-0000</span></p>
                     <p class="delivery-info"><i class="fas fa-motorcycle"></i> Entregamos em toda região</p>
                 </div>
             </div>
@@ -96,13 +96,6 @@
                             <div>
                                 <p class="delivery-title">Taxa de Entrega</p>
                                 <p class="delivery-price">R$ 5.00</p>
-                            </div>
-                        </div>
-                        <div class="delivery-option highlight">
-                            <span class="delivery-icon">🎁</span>
-                            <div>
-                                <p class="delivery-title">Grátis acima de</p>
-                                <p class="delivery-price">R$ 150.00</p>
                             </div>
                         </div>
                     </div>
@@ -379,9 +372,12 @@
                 <strong>Total: </strong><span id="cart-total">R$ 0,00</span>
             </div>
             <div class="cart-actions">
-                <div class="customer-info">
-                    <h4>Dados para Entrega</h4>
-                    <div class="customer-info-fields">
+                <div class="customer-info collapsible" id="customer-info">
+                    <div class="customer-info-header" onclick="toggleCustomerInfo()">
+                        <h4>Dados para Entrega</h4>
+                        <i class="fas fa-chevron-down" id="customer-info-toggle"></i>
+                    </div>
+                    <div class="customer-info-fields" id="customer-info-fields">
                         <div class="field-group">
                             <label for="customer-name">Nome:</label>
                             <input type="text" id="customer-name" name="customer-name" placeholder="Seu nome completo" required>
@@ -616,6 +612,22 @@
                                 <option value="Vivendas Bela Vista">Vivendas Bela Vista</option>
                             </select>
                         </div>
+                        <div class="field-group">
+                            <label for="customer-address">Endereço:</label>
+                            <input type="text" id="customer-address" name="customer-address" placeholder="Rua, número, casa/apartamento" required>
+                        </div>
+                        <div class="field-group">
+                            <label for="customer-reference">Ponto de referência:</label>
+                            <input type="text" id="customer-reference" name="customer-reference" placeholder="Opcional">
+                        </div>
+                        <div class="field-group">
+                            <label for="customer-phone">Telefone:</label>
+                            <input type="tel" id="customer-phone" name="customer-phone" placeholder="(XX) XXXXX-XXXX" required>
+                        </div>
+                        <div class="field-group">
+                            <label for="customer-observations">Observações:</label>
+                            <textarea id="customer-observations" name="customer-observations" placeholder="Opcional - Alguma observação sobre o pedido?" rows="3"></textarea>
+                        </div>
                     </div>
                 </div>
                 <div class="payment-method">
@@ -675,7 +687,7 @@
         </div>
 
         <div class="copyright">
-            &copy; 2024 Pastelaria Itoman. Todos os direitos reservados.
+            &copy; 2026 Vendramini Informática - Todos os direitos reservados.
         </div>
     </footer>
 

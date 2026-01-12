@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Administração - Pastelaria Itoman</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/admin.css">
+</head>
+<body>
+    <script>
+        // Verificar autenticação imediatamente
+        if (sessionStorage.getItem('adminAuthenticated') !== 'true') {
+            window.location.href = 'login.html';
+        }
+    </script>
+    
+    <div class="admin-layout">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <img src="img/logo_v1659390701.jpeg" alt="Pastelaria Itoman" class="sidebar-logo">
+                <h2>Pastelaria Itoman</h2>
+            </div>
+            
+            <nav class="sidebar-nav">
+                <ul>
+                    <li>
+                        <a href="#dashboard" class="nav-link active" data-section="dashboard">
+                            <i class="fas fa-tachometer-alt"></i>
+                            <span>Dashboard</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#menu" class="nav-link" data-section="menu">
+                            <i class="fas fa-utensils"></i>
+                            <span>Cardápio</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#whatsapp" class="nav-link" data-section="whatsapp">
+                            <i class="fab fa-whatsapp"></i>
+                            <span>WhatsApp</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#settings" class="nav-link" data-section="settings">
+                            <i class="fas fa-cog"></i>
+                            <span>Configurações</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#orders" class="nav-link" data-section="orders">
+                            <i class="fas fa-shopping-cart"></i>
+                            <span>Pedidos</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+            
+            <div class="sidebar-footer">
+                <a href="index.html" class="btn-back-site">
+                    <i class="fas fa-home"></i>
+                    <span>Voltar ao Site</span>
+                </a>
+                <button class="btn-logout" onclick="logout()">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span>Sair</span>
+                </button>
+            </div>
+        </aside>
+        
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Top Bar -->
+            <header class="top-bar">
+                <div class="top-bar-left">
+                    <button class="menu-toggle" id="menuToggle">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                    <h1 class="page-title">Dashboard</h1>
+                </div>
+                <div class="top-bar-right">
+                    <div class="user-info">
+                        <img src="img/logo_v1659390701.jpeg" alt="Logo" class="user-avatar">
+                        <span class="user-name">Administrador</span>
+                    </div>
+                </div>
+            </header>
+            
+            <!-- Content Area -->
+            <div class="content-area">
+                <!-- Dashboard Section -->
+                <section id="dashboard" class="content-section active">
+                    <div class="section-header">
+                        <h2><i class="fas fa-tachometer-alt"></i> Dashboard</h2>
+                        <p>Visão geral do seu negócio</p>
+                    </div>
+                    
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-icon">
+                                <i class="fas fa-utensils"></i>
+                            </div>
+                            <div class="stat-info">
+                                <h3 id="total-items">0</h3>
+                                <p>Itens no Cardápio</p>
+                            </div>
+                        </div>
+                        
+                        <div class="stat-card">
+                            <div class="stat-icon">
+                                <i class="fas fa-shopping-cart"></i>
+                            </div>
+                            <div class="stat-info">
+                                <h3 id="total-orders">0</h3>
+                                <p>Pedidos Hoje</p>
+                            </div>
+                        </div>
+                        
+                        <div class="stat-card">
+                            <div class="stat-icon">
+                                <i class="fas fa-dollar-sign"></i>
+                            </div>
+                            <div class="stat-info">
+                                <h3 id="total-revenue">R$ 0,00</h3>
+                                <p>Faturamento Hoje</p>
+                            </div>
+                        </div>
+                        
+                        <div class="stat-card">
+                            <div class="stat-icon">
+                                <i class="fas fa-star"></i>
+                            </div>
+                            <div class="stat-info">
+                                <h3>4.8</h3>
+                                <p>Avaliação Média</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                
+                <!-- Menu Section -->
+                <section id="menu" class="content-section">
+                    <div class="section-header">
+                        <h2><i class="fas fa-utensils"></i> Gerenciar Cardápio</h2>
+                        <p>Adicione, edite ou remova itens do seu cardápio</p>
+                    </div>
+                    
+                    <!-- Barra de Pesquisa e Filtros -->
+                    <div class="menu-controls">
+                        <div class="search-bar">
+                            <div class="search-input-wrapper">
+                                <i class="fas fa-search"></i>
+                                <input type="text" id="searchInput" placeholder="Pesquisar itens..." onkeyup="searchItems()">
+                            </div>
+                        </div>
+                        <div class="filter-controls">
+                            <select id="categoryFilter" onchange="filterByCategory()">
+                                <option value="">Todas as Categorias</option>
+                                <option value="pasteis">Pastéis</option>
+                                <option value="combos">Combos</option>
+                                <option value="bebidas">Bebidas</option>
+                                <option value="destaques">Destaques</option>
+                            </select>
+                        </div>
+                        <div class="view-toggle">
+                            <button class="btn btn-outline btn-sm" onclick="toggleViewMode()" id="viewModeBtn">
+                                <i class="fas fa-list"></i>
+                                <span id="viewModeText">Lista</span>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Formulário para adicionar novo item -->
+                    <div class="add-item-form" id="addItemForm">
+                        <div class="form-header" onclick="toggleAddForm()">
+                            <h3><i class="fas fa-plus"></i> Adicionar Novo Item</h3>
+                            <i class="fas fa-chevron-down" id="addFormToggle"></i>
+                        </div>
+                        <div class="form-content" id="addFormContent">
+                            <div class="form-group">
+                                <label for="new-item-name">Nome do Item:</label>
+                                <input type="text" id="new-item-name" placeholder="Ex: Pastel de Carne">
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="new-item-price">Preço:</label>
+                                    <input type="text" id="new-item-price" placeholder="R$ 12,90">
+                                </div>
+                                <div class="form-group">
+                                    <label for="new-item-category">Categoria:</label>
+                                    <select id="new-item-category">
+                                        <option value="pasteis">Pastéis</option>
+                                        <option value="combos">Combos</option>
+                                        <option value="bebidas">Bebidas</option>
+                                        <option value="destaques">Destaques</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="new-item-description">Descrição:</label>
+                                <textarea id="new-item-description" placeholder="Descreva o item..." rows="3"></textarea>
+                            </div>
+                            <button class="btn btn-success" onclick="addMenuItem()">
+                                <i class="fas fa-plus"></i> Adicionar Item
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Grid de itens existentes -->
+                    <div class="menu-items-grid" id="menu-items-grid">
+                        <!-- Itens serão carregados aqui via JavaScript -->
+                    </div>
+                    
+                    <!-- Lista de itens (alternativa) -->
+                    <div class="menu-items-list" id="menu-items-list" style="display: none;">
+                        <!-- Itens serão carregados aqui via JavaScript -->
+                    </div>
+                </section>
+                
+                <!-- WhatsApp Section -->
+                <section id="whatsapp" class="content-section">
+                    <div class="section-header">
+                        <h2><i class="fab fa-whatsapp"></i> Configurações do WhatsApp</h2>
+                        <p>Configure o número para receber pedidos</p>
+                    </div>
+                    
+                    <div class="form-card">
+                        <div class="form-group">
+                            <label for="whatsapp-number">Número do WhatsApp:</label>
+                            <input type="tel" id="whatsapp-number" placeholder="5519992450000">
+                            <small>Formato: DDD + número (ex: 5519992450000)</small>
+                        </div>
+                        <button class="btn btn-primary" onclick="saveWhatsApp()">
+                            <i class="fas fa-save"></i> Salvar WhatsApp
+                        </button>
+                    </div>
+                </section>
+                
+                <!-- Settings Section -->
+                <section id="settings" class="content-section">
+                    <div class="section-header">
+                        <h2><i class="fas fa-cog"></i> Configurações Gerais</h2>
+                        <p>Configure as informações do seu estabelecimento</p>
+                    </div>
+                    
+                    <div class="form-card">
+                        <div class="form-group">
+                            <label for="site-title">Título do Site:</label>
+                            <input type="text" id="site-title" placeholder="Pastelaria Itoman">
+                        </div>
+                        <div class="form-group">
+                            <label for="delivery-fee">Taxa de Entrega:</label>
+                            <input type="text" id="delivery-fee" placeholder="R$ 5,00">
+                        </div>
+                        <button class="btn btn-primary" onclick="saveSettings()">
+                            <i class="fas fa-save"></i> Salvar Configurações
+                        </button>
+                    </div>
+                </section>
+                
+                <!-- Orders Section -->
+                <section id="orders" class="content-section">
+                    <div class="section-header">
+                        <h2><i class="fas fa-shopping-cart"></i> Pedidos</h2>
+                        <p>Visualize e gerencie seus pedidos</p>
+                    </div>
+                    
+                    <div class="orders-list">
+                        <div class="empty-state">
+                            <i class="fas fa-inbox"></i>
+                            <h3>Nenhum pedido ainda</h3>
+                            <p>Os pedidos aparecerão aqui quando os clientes fizerem encomendas</p>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
+    
+    <!-- Modal de Edição -->
+    <div id="editModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3><i class="fas fa-edit"></i> Editar Item</h3>
+                <button class="modal-close" onclick="closeEditModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="edit-item-name">Nome do Item:</label>
+                    <input type="text" id="edit-item-name" placeholder="Nome do item">
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="edit-item-price">Preço:</label>
+                        <input type="text" id="edit-item-price" placeholder="R$ 0,00">
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-item-category">Categoria:</label>
+                        <select id="edit-item-category">
+                            <option value="pasteis">Pastéis</option>
+                            <option value="combos">Combos</option>
+                            <option value="bebidas">Bebidas</option>
+                            <option value="destaques">Destaques</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="edit-item-description">Descrição:</label>
+                    <textarea id="edit-item-description" placeholder="Descreva o item..." rows="3"></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-danger" onclick="closeEditModal()">
+                    <i class="fas fa-times"></i> Cancelar
+                </button>
+                <button class="btn btn-success" onclick="saveEditedItem()">
+                    <i class="fas fa-save"></i> Salvar Alterações
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <script src="js/admin.js"></script>
+</body>
+</html>

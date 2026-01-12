@@ -939,13 +939,45 @@ header {
     border-radius: 10px;
     padding: 1rem;
     margin-bottom: 1rem;
+    overflow: hidden;
 }
 
-.customer-info h4 {
-    margin: 0 0 0.75rem 0;
+.customer-info.collapsible .customer-info-fields {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease-out;
+    padding: 0 1rem;
+}
+
+.customer-info.collapsible.expanded .customer-info-fields {
+    max-height: 1000px;
+    transition: max-height 0.3s ease-in;
+    padding: 0 0 1rem 0;
+}
+
+.customer-info-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    user-select: none;
+    padding: 0 0 1rem 0;
+}
+
+.customer-info-header h4 {
+    margin: 0;
     font-size: 1rem;
     font-weight: 700;
     color: var(--cart-primary);
+}
+
+.customer-info-header i {
+    transition: transform 0.3s ease;
+    color: var(--cart-primary);
+}
+
+.customer-info.expanded .customer-info-header i {
+    transform: rotate(180deg);
 }
 
 .customer-info-fields {
@@ -967,7 +999,8 @@ header {
 }
 
 .field-group input,
-.field-group select {
+.field-group select,
+.field-group textarea {
     padding: 0.6rem;
     border: 1px solid rgba(0, 0, 0, 0.12);
     border-radius: 6px;
@@ -975,10 +1008,12 @@ header {
     background-color: var(--white);
     color: var(--text-color);
     transition: var(--transition);
+    font-family: inherit;
 }
 
 .field-group input:focus,
-.field-group select:focus {
+.field-group select:focus,
+.field-group textarea:focus {
     outline: none;
     border-color: var(--cart-primary);
     box-shadow: 0 0 0 2px rgba(46, 125, 50, 0.15);
@@ -986,6 +1021,11 @@ header {
 
 .field-group select {
     cursor: pointer;
+}
+
+.field-group textarea {
+    resize: vertical;
+    min-height: 80px;
 }
 
 .payment-method {

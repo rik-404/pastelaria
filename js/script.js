@@ -22,6 +22,8 @@ document.addEventListener('DOMContentLoaded', () => {
     loadCart();
     setupEventListeners();
     updateCartUI();
+    loadCustomerData();
+    loadMenuItemsFromAdmin();
     
     // Carregar itens do menu salvos no localStorage, se existirem
     const savedMenuItems = localStorage.getItem(MENU_ITEMS_STORAGE_KEY);
@@ -31,6 +33,167 @@ document.addEventListener('DOMContentLoaded', () => {
         updateMenuItems(menuItemsData);
     }
 });
+
+// Carregar itens do menu da administração
+function loadMenuItemsFromAdmin() {
+    const adminMenuItems = localStorage.getItem('menuItems');
+    if (adminMenuItems) {
+        const items = JSON.parse(adminMenuItems);
+        // Atualizar os itens no site principal
+        updateMenuItemsFromAdmin(items);
+    }
+}
+
+// Atualizar itens do menu no site principal
+function updateMenuItemsFromAdmin(items) {
+    // Atualizar pastéis
+    const pasteisItems = items.filter(item => item.category === 'pasteis');
+    const pasteisContainer = document.querySelector('#pasteis .menu-items');
+    if (pasteisContainer) {
+        pasteisContainer.innerHTML = '';
+        pasteisItems.forEach(item => {
+            pasteisContainer.innerHTML += `
+                <div class="menu-item" data-name="${item.name}" data-price="${item.price}">
+                    <div class="item-info">
+                        <h3>${item.name}</h3>
+                        <p class="item-description">${item.description || ''}</p>
+                        <p class="item-price">R$ ${item.price.toFixed(2).replace('.', ',')}</p>
+                    </div>
+                    <div class="item-quantity">
+                        <button class="minus">-</button>
+                        <span class="quantity">0</span>
+                        <button class="plus">+</button>
+                    </div>
+                    <button class="btn-add">Adicionar</button>
+                </div>
+            `;
+        });
+    }
+    
+    // Atualizar combos
+    const combosItems = items.filter(item => item.category === 'combos');
+    const combosContainer = document.querySelector('#combos .menu-items');
+    if (combosContainer) {
+        combosContainer.innerHTML = '';
+        combosItems.forEach(item => {
+            combosContainer.innerHTML += `
+                <div class="combo-item" data-name="${item.name}" data-price="${item.price}">
+                    <div class="item-info">
+                        <h3>${item.name}</h3>
+                        <p class="item-description">${item.description || ''}</p>
+                        <p class="item-price">R$ ${item.price.toFixed(2).replace('.', ',')}</p>
+                    </div>
+                    <div class="item-quantity">
+                        <button class="minus">-</button>
+                        <span class="quantity">0</span>
+                        <button class="plus">+</button>
+                    </div>
+                    <button class="btn-add">Adicionar</button>
+                </div>
+            `;
+        });
+    }
+    
+    // Atualizar bebidas
+    const bebidasItems = items.filter(item => item.category === 'bebidas');
+    const bebidasContainer = document.querySelector('#bebidas .menu-items');
+    if (bebidasContainer) {
+        bebidasContainer.innerHTML = '';
+        bebidasItems.forEach(item => {
+            bebidasContainer.innerHTML += `
+                <div class="menu-item" data-name="${item.name}" data-price="${item.price}">
+                    <div class="item-info">
+                        <h3>${item.name}</h3>
+                        <p class="item-description">${item.description || ''}</p>
+                        <p class="item-price">R$ ${item.price.toFixed(2).replace('.', ',')}</p>
+                    </div>
+                    <div class="item-quantity">
+                        <button class="minus">-</button>
+                        <span class="quantity">0</span>
+                        <button class="plus">+</button>
+                    </div>
+                    <button class="btn-add">Adicionar</button>
+                </div>
+            `;
+        });
+    }
+    
+    // Atualizar destaques
+    const destaquesItems = items.filter(item => item.category === 'destaques');
+    const destaquesContainer = document.querySelector('#destaques .highlights-grid');
+    if (destaquesContainer) {
+        destaquesContainer.innerHTML = '';
+        destaquesItems.forEach(item => {
+            destaquesContainer.innerHTML += `
+                <div class="highlight-item" data-name="${item.name}" data-price="${item.price}">
+                    <h3>${item.name}</h3>
+                    <p class="highlight-description">${item.description || ''}</p>
+                    <p class="highlight-price">R$ ${item.price.toFixed(2).replace('.', ',')}</p>
+                    <button class="btn-add-to-cart">Adicionar ao Carrinho</button>
+                </div>
+            `;
+        });
+    }
+    
+    // Recarregar event listeners
+    setupEventListeners();
+}
+
+// Carregar dados do cliente salvos
+function loadCustomerData() {
+    const savedCustomerData = localStorage.getItem('customerData');
+    if (savedCustomerData) {
+        const customerData = JSON.parse(savedCustomerData);
+        
+        // Preencher os campos com os dados salvos
+        if (customerData.name) document.getElementById('customer-name').value = customerData.name;
+        if (customerData.neighborhood) document.getElementById('customer-neighborhood').value = customerData.neighborhood;
+        if (customerData.address) document.getElementById('customer-address').value = customerData.address;
+        if (customerData.reference) document.getElementById('customer-reference').value = customerData.reference;
+        if (customerData.phone) document.getElementById('customer-phone').value = customerData.phone;
+        if (customerData.observations) document.getElementById('customer-observations').value = customerData.observations;
+    }
+    
+    // Carregar número do WhatsApp no header
+    loadWhatsAppInHeader();
+}
+
+// Carregar número do WhatsApp no header
+function loadWhatsAppInHeader() {
+    const savedWhatsApp = localStorage.getItem('whatsappNumber');
+    if (savedWhatsApp) {
+        const headerPhone = document.getElementById('header-phone');
+        if (headerPhone) {
+            // Formatar número para exibição
+            const formatted = formatPhoneNumber(savedWhatsApp);
+            headerPhone.textContent = formatted;
+        }
+    }
+}
+
+// Formatar número de telefone para exibição
+function formatPhoneNumber(number) {
+    // Remover caracteres não numéricos
+    const clean = number.replace(/\D/g, '');
+    
+    // Verificar se tem DDD + número (ex: 5519992450000)
+    if (clean.length === 11 && clean.startsWith('55')) {
+        // Formato: (19) 99245-0000
+        const ddd = clean.substring(2, 4);
+        const firstPart = clean.substring(4, 9);
+        const secondPart = clean.substring(9, 13);
+        return `(${ddd}) ${firstPart}-${secondPart}`;
+    } else if (clean.length === 10) {
+        // Formato: (19) 9245-0000
+        const ddd = clean.substring(0, 2);
+        const firstPart = clean.substring(2, 6);
+        const secondPart = clean.substring(6, 10);
+        return `(${ddd}) ${firstPart}-${secondPart}`;
+    }
+    
+    // Retornar original se não conseguir formatar
+    return number;
+}
 
 // Configurar event listeners
 function setupEventListeners() {
@@ -407,22 +570,53 @@ function checkout() {
         return;
     }
     
-    // Validar campos obrigatórios
+    // Verificar se os dados de entrega estão preenchidos
     const customerName = document.getElementById('customer-name').value.trim();
     const customerNeighborhood = document.getElementById('customer-neighborhood').value;
+    const customerAddress = document.getElementById('customer-address').value.trim();
+    const customerPhone = document.getElementById('customer-phone').value.trim();
     
-    if (!customerName) {
-        showNotification('Por favor, informe seu nome!', 'error');
+    // Se algum campo obrigatório estiver vazio, expandir e mostrar erro
+    if (!customerName || !customerNeighborhood || !customerAddress || !customerPhone) {
+        // Expandir a seção de dados de entrega
+        const customerInfo = document.getElementById('customer-info');
+        customerInfo.classList.add('expanded');
+        
+        // Mostrar notificação de erro
+        showNotification('Por favor, preencha todos os dados obrigatórios para entrega!', 'error');
+        
+        // Focar no primeiro campo vazio
+        if (!customerName) {
+            document.getElementById('customer-name').focus();
+        } else if (!customerNeighborhood) {
+            document.getElementById('customer-neighborhood').focus();
+        } else if (!customerAddress) {
+            document.getElementById('customer-address').focus();
+        } else if (!customerPhone) {
+            document.getElementById('customer-phone').focus();
+        }
+        
         return;
     }
     
-    if (!customerNeighborhood) {
-        showNotification('Por favor, selecione seu bairro!', 'error');
-        return;
-    }
+    // Obter dados opcionais
+    const customerReference = document.getElementById('customer-reference').value.trim();
+    const customerObservations = document.getElementById('customer-observations').value.trim();
     
-    // Número de telefone da loja (substitua pelo número correto)
-    const phoneNumber = '5519992450000';
+    // Salvar dados do cliente no localStorage
+    const customerData = {
+        name: customerName,
+        neighborhood: customerNeighborhood,
+        address: customerAddress,
+        reference: customerReference,
+        phone: customerPhone,
+        observations: customerObservations
+    };
+    localStorage.setItem('customerData', JSON.stringify(customerData));
+    
+    // Número de telefone da loja (carregar do localStorage ou usar padrão)
+    const savedWhatsApp = localStorage.getItem('whatsappNumber');
+    const phoneNumber = savedWhatsApp || '5519992450000';
     
     // Construir mensagem
     let message = 'Olá! Gostaria de fazer um pedido:\n\n';
@@ -433,21 +627,25 @@ function checkout() {
         total += itemTotal;
 
         const descriptionText = item.description ? ` (${item.description})` : '';
-        message += `${index + 1}. ${item.quantity}x ${item.name}${descriptionText} - R$ ${itemTotal.toFixed(2).replace('.', ',')}%0A`;
+        message += `${index + 1}. ${item.quantity}x ${item.name}${descriptionText} - R$ ${itemTotal.toFixed(2).replace('.', ',')}\n`;
     });
     
-    message += `%0A*Total: R$ ${total.toFixed(2).replace('.', ',')}*%0A%0A`;
+    message += `\n*Total: R$ ${total.toFixed(2).replace('.', ',')}*\n\n`;
     const selectedPaymentMethod = document.querySelector('input[name="payment-method"]:checked')?.value;
     if (selectedPaymentMethod) {
-        message += `Forma de pagamento: ${selectedPaymentMethod}%0A%0A`;
+        message += `Forma de pagamento: ${selectedPaymentMethod}\n\n`;
     }
-    message += 'Dados para entrega:%0A';
-    message += `Nome: ${customerName}%0A`;
-    message += `Bairro: ${customerNeighborhood}%0A`;
-    message += 'Endereço: [Complemento - Rua, número, casa/apt]%0A';
-    message += 'Ponto de referência: [Opcional]%0A';
-    message += 'Telefone: [Seu Telefone]%0A%0A';
-    message += 'Observações: [Opcional]';
+    message += 'Dados para entrega:\n';
+    message += `Nome: ${customerName}\n`;
+    message += `Bairro: ${customerNeighborhood}\n`;
+    message += `Endereço: ${customerAddress}\n`;
+    if (customerReference) {
+        message += `Ponto de referência: ${customerReference}\n`;
+    }
+    message += `Telefone: ${customerPhone}\n`;
+    if (customerObservations) {
+        message += `\nObservações: ${customerObservations}`;
+    }
     
     // Codificar a mensagem para URL
     const encodedMessage = encodeURIComponent(message);
@@ -460,6 +658,12 @@ function checkout() {
     saveCart();
     updateCartUI();
     toggleCart();
+}
+
+// Toggle para expandir/recolher dados de entrega
+function toggleCustomerInfo() {
+    const customerInfo = document.getElementById('customer-info');
+    customerInfo.classList.toggle('expanded');
 }
 
 // Mostrar notificação
