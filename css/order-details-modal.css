@@ -1,0 +1,289 @@
+/* Modal de Detalhes do Pedido */
+.modal-large {
+    max-width: 90%;
+    width: 900px;
+    max-height: 90vh;
+    overflow-y: auto;
+}
+
+.order-details-container {
+    display: grid;
+    gap: 1.5rem;
+}
+
+/* Seções do Modal */
+.order-info-section,
+.customer-info-section,
+.items-info-section,
+.actions-section {
+    background: #f8f9fa;
+    border-radius: 12px;
+    padding: 1.5rem;
+    border: 1px solid #e9ecef;
+}
+
+.order-info-section h4,
+.customer-info-section h4,
+.items-info-section h4,
+.actions-section h4 {
+    margin: 0 0 1rem 0;
+    color: #495057;
+    font-size: 1.1rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.order-info-section h4 i,
+.customer-info-section h4 i,
+.items-info-section h4 i,
+.actions-section h4 i {
+    color: #667eea;
+}
+
+/* Grid de Informações */
+.info-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1rem;
+}
+
+.info-item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+}
+
+.info-item label {
+    font-weight: 600;
+    color: #6c757d;
+    font-size: 0.9rem;
+}
+
+.info-item span {
+    color: #212529;
+    font-size: 1rem;
+}
+
+.total-amount {
+    font-weight: 700;
+    color: #28a745;
+    font-size: 1.2rem;
+}
+
+/* Tabela de Itens */
+.items-table {
+    margin-top: 1rem;
+}
+
+.items-table table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.items-table th {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 1rem;
+    text-align: left;
+    font-weight: 600;
+    font-size: 0.9rem;
+}
+
+.items-table td {
+    padding: 0.8rem 1rem;
+    border-bottom: 1px solid #f0f0f0;
+    vertical-align: middle;
+}
+
+.items-table tr:last-child td {
+    border-bottom: none;
+}
+
+.items-table tr:hover {
+    background-color: #f8f9fa;
+}
+
+/* Resumo do Pedido */
+.order-summary {
+    margin-top: 1.5rem;
+    padding: 1rem;
+    background: white;
+    border-radius: 8px;
+    border: 1px solid #e9ecef;
+}
+
+.summary-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem 0;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.summary-row:last-child {
+    border-bottom: none;
+}
+
+.summary-row.total-row {
+    border-top: 2px solid #28a745;
+    margin-top: 0.5rem;
+    padding-top: 1rem;
+}
+
+.summary-row label {
+    font-weight: 600;
+    color: #495057;
+}
+
+.summary-row.total-row label {
+    font-size: 1.1rem;
+    color: #28a745;
+}
+
+.summary-row span {
+    font-weight: 600;
+    color: #212529;
+}
+
+.summary-row.total-row span {
+    font-size: 1.2rem;
+    color: #28a745;
+}
+
+/* Botões de Ação */
+.action-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.8rem;
+    margin-top: 1rem;
+}
+
+.action-buttons .btn {
+    flex: 1;
+    min-width: 150px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.8rem 1rem;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-decoration: none;
+}
+
+.action-buttons .btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.action-buttons .btn-primary {
+    background: linear-gradient(135deg, #0984e3 0%, #74b9ff 100%);
+    color: white;
+}
+
+.action-buttons .btn-warning {
+    background: linear-gradient(135deg, #f39c12 0%, #f6c23e 100%);
+    color: white;
+}
+
+.action-buttons .btn-success {
+    background: linear-gradient(135deg, #27ae60 0%, #2ecc71 100%);
+    color: white;
+}
+
+.action-buttons .btn-danger {
+    background: linear-gradient(135deg, #e74c3c 0%, #e17055 100%);
+    color: white;
+}
+
+.action-buttons .btn-info {
+    background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+    color: white;
+}
+
+.action-buttons .btn-secondary {
+    background: linear-gradient(135deg, #6c757d 0%, #868e96 100%);
+    color: white;
+}
+
+/* Responsivo */
+@media (max-width: 768px) {
+    .modal-large {
+        max-width: 95%;
+        margin: 1rem;
+    }
+    
+    .info-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .action-buttons {
+        flex-direction: column;
+    }
+    
+    .action-buttons .btn {
+        min-width: auto;
+        width: 100%;
+    }
+    
+    .items-table {
+        overflow-x: auto;
+    }
+    
+    .items-table table {
+        min-width: 600px;
+    }
+}
+
+/* Animações */
+.modal-large {
+    animation: slideIn 0.3s ease-out;
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Status Badge no Modal */
+#detail-order-status {
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* Loading State */
+.loading-items {
+    text-align: center;
+    padding: 2rem;
+    color: #6c757d;
+}
+
+.loading-items i {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}

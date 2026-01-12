@@ -746,7 +746,7 @@
 /* View Modes */
 .menu-items-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
     gap: 1.5rem;
     margin-top: 1.5rem;
 }
@@ -756,6 +756,35 @@
     flex-direction: column;
     gap: 1rem;
     margin-top: 1.5rem;
+}
+
+/* Responsividade do Grid */
+@media (max-width: 768px) {
+    .menu-items-grid {
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+        gap: 1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .menu-items-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+}
+
+@media (min-width: 1200px) {
+    .menu-items-grid {
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 2rem;
+    }
+}
+
+@media (min-width: 1400px) {
+    .menu-items-grid {
+        grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+        gap: 2rem;
+    }
 }
 
 .menu-items-list .menu-item-card {
@@ -876,6 +905,88 @@
         left: 10px;
         top: 10px;
     }
+}
+
+/* Status Stats Grid */
+.status-stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+    margin-top: 2rem;
+}
+
+.status-card {
+    background: white;
+    border-radius: 12px;
+    padding: 1.5rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border-left: 4px solid transparent;
+}
+
+.status-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+.status-card.pending {
+    border-left-color: #f39c12;
+}
+
+.status-card.confirmed {
+    border-left-color: #0984e3;
+}
+
+.status-card.delivering {
+    border-left-color: #27ae60;
+}
+
+.status-card.delivered {
+    border-left-color: #2ecc71;
+}
+
+.status-icon {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    color: white;
+}
+
+.status-card.pending .status-icon {
+    background: linear-gradient(135deg, #f39c12 0%, #f6c23e 100%);
+}
+
+.status-card.confirmed .status-icon {
+    background: linear-gradient(135deg, #0984e3 0%, #74b9ff 100%);
+}
+
+.status-card.delivering .status-icon {
+    background: linear-gradient(135deg, #27ae60 0%, #2ecc71 100%);
+}
+
+.status-card.delivered .status-icon {
+    background: linear-gradient(135deg, #2ecc71 0%, #27ae60 100%);
+}
+
+.status-info h3 {
+    font-size: 1.8rem;
+    font-weight: 700;
+    margin: 0;
+    color: #2c3e50;
+}
+
+.status-info p {
+    margin: 0.25rem 0 0 0;
+    color: #7f8c8d;
+    font-size: 0.9rem;
+    font-weight: 500;
 }
 
 @media (max-width: 480px) {

@@ -4,7 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Administração - Pastelaria Itoman</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/admin.css">
+    <link rel="stylesheet" href="css/orders-table.css">
+    <link rel="stylesheet" href="css/order-details-modal.css">
+    <link rel="stylesheet" href="css/confirmation-modal.css">
+    <link rel="stylesheet" href="css/pending-notifications.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="css/admin.css">
 </head>
 <body>
@@ -130,11 +135,54 @@
                         
                         <div class="stat-card">
                             <div class="stat-icon">
-                                <i class="fas fa-star"></i>
+                                <i class="fas fa-check-circle"></i>
                             </div>
                             <div class="stat-info">
-                                <h3>4.8</h3>
-                                <p>Avaliação Média</p>
+                                <h3 id="delivered-orders">0</h3>
+                                <p>Entregues Hoje</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Cards de Status Detalhados -->
+                    <div class="status-stats-grid">
+                        <div class="status-card pending">
+                            <div class="status-icon">
+                                <i class="fas fa-clock"></i>
+                            </div>
+                            <div class="status-info">
+                                <h3 id="pending-orders">0</h3>
+                                <p>Pendentes</p>
+                            </div>
+                        </div>
+                        
+                        <div class="status-card confirmed">
+                            <div class="status-icon">
+                                <i class="fas fa-check"></i>
+                            </div>
+                            <div class="status-info">
+                                <h3 id="confirmed-orders">0</h3>
+                                <p>Confirmados</p>
+                            </div>
+                        </div>
+                        
+                        <div class="status-card delivering">
+                            <div class="status-icon">
+                                <i class="fas fa-motorcycle"></i>
+                            </div>
+                            <div class="status-info">
+                                <h3 id="delivering-orders">0</h3>
+                                <p>Saiu para Entrega</p>
+                            </div>
+                        </div>
+                        
+                        <div class="status-card delivered">
+                            <div class="status-icon">
+                                <i class="fas fa-truck"></i>
+                            </div>
+                            <div class="status-info">
+                                <h3 id="delivered-orders-detail">0</h3>
+                                <p>Entregues</p>
                             </div>
                         </div>
                     </div>
@@ -268,11 +316,25 @@
                     </div>
                     
                     <div class="orders-list">
-                        <div class="empty-state">
-                            <i class="fas fa-inbox"></i>
-                            <h3>Nenhum pedido ainda</h3>
-                            <p>Os pedidos aparecerão aqui quando os clientes fizerem encomendas</p>
-                        </div>
+                        <table id="orders-table" class="orders-table">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Cliente</th>
+                                    <th>Total</th>
+                                    <th>Data</th>
+                                    <th>Status</th>
+                                    <th>Ações</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td colspan="6" style="text-align: center; padding: 20px;">
+                                        <i class="fas fa-spinner fa-spin"></i> Carregando pedidos...
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
                 </section>
             </div>
@@ -283,45 +345,196 @@
     <div id="editModal" class="modal">
         <div class="modal-content">
             <div class="modal-header">
-                <h3><i class="fas fa-edit"></i> Editar Item</h3>
-                <button class="modal-close" onclick="closeEditModal()">&times;</button>
+                <h3>Editar Item</h3>
+                <button class="close-btn" onclick="closeEditModal()">&times;</button>
             </div>
             <div class="modal-body">
-                <div class="form-group">
-                    <label for="edit-item-name">Nome do Item:</label>
-                    <input type="text" id="edit-item-name" placeholder="Nome do item">
-                </div>
-                <div class="form-row">
+                <form id="editForm">
                     <div class="form-group">
-                        <label for="edit-item-price">Preço:</label>
-                        <input type="text" id="edit-item-price" placeholder="R$ 0,00">
+                        <label for="edit-item-name">Nome do Item:</label>
+                        <input type="text" id="edit-item-name" required>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="edit-item-price">Preço:</label>
+                            <input type="text" id="edit-item-price" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="edit-item-category">Categoria:</label>
+                            <select id="edit-item-category">
+                                <option value="pasteis">Pastéis</option>
+                                <option value="combos">Combos</option>
+                                <option value="bebidas">Bebidas</option>
+                                <option value="destaques">Destaques</option>
+                            </select>
+                        </div>
                     </div>
                     <div class="form-group">
-                        <label for="edit-item-category">Categoria:</label>
-                        <select id="edit-item-category">
-                            <option value="pasteis">Pastéis</option>
-                            <option value="combos">Combos</option>
-                            <option value="bebidas">Bebidas</option>
-                            <option value="destaques">Destaques</option>
-                        </select>
+                        <label for="edit-item-description">Descrição:</label>
+                        <textarea id="edit-item-description" rows="3"></textarea>
                     </div>
-                </div>
-                <div class="form-group">
-                    <label for="edit-item-description">Descrição:</label>
-                    <textarea id="edit-item-description" placeholder="Descreva o item..." rows="3"></textarea>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" onclick="closeEditModal()">Cancelar</button>
+                        <button type="submit" class="btn btn-success">Salvar Alterações</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Detalhes do Pedido -->
+    <div id="orderDetailsModal" class="modal">
+        <div class="modal-content modal-large">
+            <div class="modal-header">
+                <h3><i class="fas fa-receipt"></i> Detalhes do Pedido</h3>
+                <button class="close-btn" onclick="closeOrderDetailsModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="order-details-container">
+                    <!-- Informações do Pedido -->
+                    <div class="order-info-section">
+                        <h4><i class="fas fa-info-circle"></i> Informações do Pedido</h4>
+                        <div class="info-grid">
+                            <div class="info-item">
+                                <label>ID do Pedido:</label>
+                                <span id="detail-order-id">#-</span>
+                            </div>
+                            <div class="info-item">
+                                <label>Status:</label>
+                                <span id="detail-order-status" class="status-badge">-</span>
+                            </div>
+                            <div class="info-item">
+                                <label>Data do Pedido:</label>
+                                <span id="detail-order-date">-</span>
+                            </div>
+                            <div class="info-item">
+                                <label>Total:</label>
+                                <span id="detail-order-total" class="total-amount">-</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Dados do Cliente -->
+                    <div class="customer-info-section">
+                        <h4><i class="fas fa-user"></i> Dados do Cliente</h4>
+                        <div class="info-grid">
+                            <div class="info-item">
+                                <label>Nome:</label>
+                                <span id="detail-customer-name">-</span>
+                            </div>
+                            <div class="info-item">
+                                <label>Telefone:</label>
+                                <span id="detail-customer-phone">-</span>
+                            </div>
+                            <div class="info-item">
+                                <label>Endereço:</label>
+                                <span id="detail-customer-address">-</span>
+                            </div>
+                            <div class="info-item">
+                                <label>Bairro:</label>
+                                <span id="detail-customer-neighborhood">-</span>
+                            </div>
+                            <div class="info-item">
+                                <label>Ponto de Referência:</label>
+                                <span id="detail-customer-reference">-</span>
+                            </div>
+                            <div class="info-item">
+                                <label>Observações:</label>
+                                <span id="detail-customer-observations">-</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Itens do Pedido -->
+                    <div class="items-info-section">
+                        <h4><i class="fas fa-shopping-cart"></i> Itens do Pedido</h4>
+                        <div class="items-table">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Item</th>
+                                        <th>Descrição</th>
+                                        <th>Qtd</th>
+                                        <th>Preço Unit.</th>
+                                        <th>Subtotal</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="detail-order-items">
+                                    <!-- Itens serão carregados aqui -->
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="order-summary">
+                            <div class="summary-row">
+                                <label>Subtotal:</label>
+                                <span id="detail-subtotal">R$ 0,00</span>
+                            </div>
+                            <div class="summary-row">
+                                <label>Taxa de Entrega:</label>
+                                <span id="detail-delivery-fee">R$ 5,00</span>
+                            </div>
+                            <div class="summary-row total-row">
+                                <label>Total:</label>
+                                <span id="detail-total-amount">R$ 0,00</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Ações Rápidas -->
+                    <div class="actions-section">
+                        <h4><i class="fas fa-cogs"></i> Ações Rápidas</h4>
+                        <div class="action-buttons">
+                            <button class="btn btn-primary" onclick="updateOrderStatusFromModal('confirmed')">
+                                <i class="fas fa-check"></i> Confirmar
+                            </button>
+                            <button class="btn btn-warning" onclick="updateOrderStatusFromModal('delivering')">
+                                <i class="fas fa-motorcycle"></i> Saiu para Entrega
+                            </button>
+                            <button class="btn btn-success" onclick="updateOrderStatusFromModal('delivered')">
+                                <i class="fas fa-truck"></i> Entregue
+                            </button>
+                            <button class="btn btn-danger" onclick="updateOrderStatusFromModal('cancelled')">
+                                <i class="fas fa-times"></i> Cancelar
+                            </button>
+                            <button class="btn btn-info" onclick="showNotificationConfirmation(currentOrderId)">
+                                <i class="fas fa-bell"></i> Enviar Notificação
+                            </button>
+                            <button class="btn btn-secondary" onclick="printOrderDetails()">
+                                <i class="fas fa-print"></i> Imprimir
+                            </button>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <div class="modal-footer">
-                <button class="btn btn-danger" onclick="closeEditModal()">
-                    <i class="fas fa-times"></i> Cancelar
+        </div>
+    </div>
+
+    <!-- Modal de Confirmação -->
+    <div id="confirmationModal" class="confirmation-modal">
+        <div class="confirmation-content">
+            <div class="confirmation-header">
+                <i class="fas fa-bell"></i>
+                <h3>Enviar Notificação</h3>
+            </div>
+            <div class="confirmation-body">
+                <p>Deseja enviar uma notificação para o cliente sobre este pedido?</p>
+                <p>Esta ação abrirá o WhatsApp com uma mensagem personalizada informando sobre o status do pedido.</p>
+            </div>
+            <div class="confirmation-footer">
+                <button class="confirmation-btn confirmation-btn-cancel" onclick="closeConfirmationModal()">
+                    Cancelar
                 </button>
-                <button class="btn btn-success" onclick="saveEditedItem()">
-                    <i class="fas fa-save"></i> Salvar Alterações
+                <button class="confirmation-btn confirmation-btn-confirm" onclick="confirmSendNotification()">
+                    Enviar Notificação
                 </button>
             </div>
         </div>
     </div>
-    
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="js/supabase-config.js"></script>
+    <script src="js/supabase-service.js"></script>
     <script src="js/admin.js"></script>
 </body>
 </html>

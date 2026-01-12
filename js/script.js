@@ -17,13 +17,31 @@ const checkoutBtn = document.getElementById('checkout-whatsapp');
 // Inicialização
 console.log('Script carregado com sucesso!');
 
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
     console.log('DOM totalmente carregado');
+    
+    // Inicializar Supabase se disponível
+    if (window.supabaseService && !window.supabaseService.initialized) {
+        try {
+            await window.supabaseService.init();
+            console.log('Supabase inicializado no site principal');
+        } catch (error) {
+            console.error('Erro ao inicializar Supabase no site principal:', error);
+        }
+    }
+    
     loadCart();
     setupEventListeners();
     updateCartUI();
-    loadCustomerData();
-    loadMenuItemsFromAdmin();
+    
+    // Carregar dados do cliente (agora async)
+    await loadCustomerData();
+    
+    // Carregar itens do menu (agora async)
+    await loadMenuItemsFromAdmin();
+    
+    // Configurar listener para atualizações do admin
+    setupAdminUpdateListener();
     
     // Carregar itens do menu salvos no localStorage, se existirem
     const savedMenuItems = localStorage.getItem(MENU_ITEMS_STORAGE_KEY);
@@ -34,113 +52,305 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 });
 
+// Configurar listener para atualizações do admin
+function setupAdminUpdateListener() {
+    // Escutar eventos de atualização do admin
+    window.addEventListener('adminDataUpdated', async (event) => {
+        console.log('Dados atualizados pelo admin:', event.detail);
+        
+        switch(event.detail.type) {
+            case 'menuItems':
+                if (event.detail.data) {
+                    updateMenuItemsFromAdmin(event.detail.data);
+                } else {
+                    // Se não tiver dados, recarregar do Supabase
+                    await loadMenuItemsFromAdmin();
+                }
+                break;
+            case 'whatsappNumber':
+                updateWhatsAppNumber(event.detail.data);
+                break;
+        }
+    });
+    
+    // Verificar atualizações por timestamp (para abas diferentes)
+    setInterval(async () => {
+        await checkForAdminUpdates();
+    }, 2000); // Verificar a cada 2 segundos
+}
+
+// Verificar atualizações do admin por timestamp
+async function checkForAdminUpdates() {
+    const lastUpdate = localStorage.getItem('adminLastUpdate');
+    const lastChecked = localStorage.getItem('lastChecked') || '0';
+    
+    if (lastUpdate && lastUpdate > lastChecked) {
+        console.log('Detectada atualização do admin');
+        
+        // Recarregar itens do menu do Supabase
+        await loadMenuItemsFromAdmin();
+        
+        // Recarregar número do WhatsApp
+        loadWhatsAppInHeader();
+        
+        // Atualizar timestamp
+        localStorage.setItem('lastChecked', Date.now().toString());
+        
+        // Mostrar notificação
+        showUpdateNotification('Cardápio atualizado com sucesso!');
+    }
+}
+
+// Atualizar número do WhatsApp
+function updateWhatsAppNumber(number) {
+    const headerPhone = document.getElementById('header-phone');
+    if (headerPhone) {
+        const formatted = formatPhoneNumber(number);
+        headerPhone.textContent = formatted;
+    }
+}
+
 // Carregar itens do menu da administração
-function loadMenuItemsFromAdmin() {
-    const adminMenuItems = localStorage.getItem('menuItems');
-    if (adminMenuItems) {
-        const items = JSON.parse(adminMenuItems);
-        // Atualizar os itens no site principal
-        updateMenuItemsFromAdmin(items);
+async function loadMenuItemsFromAdmin() {
+    try {
+        // Tentar carregar do Supabase primeiro
+        if (window.supabaseService && window.supabaseService.initialized) {
+            console.log('Carregando itens do Supabase...');
+            const items = await supabaseService.getMenuItems();
+            if (items && items.length > 0) {
+                console.log('Itens carregados do Supabase:', items.length);
+                updateMenuItemsFromAdmin(items);
+                return;
+            }
+        }
+        
+        // Fallback para localStorage
+        console.log('Carregando itens do localStorage...');
+        const adminMenuItems = localStorage.getItem('menuItems');
+        if (adminMenuItems) {
+            const items = JSON.parse(adminMenuItems);
+            console.log('Itens carregados do localStorage:', items.length);
+            updateMenuItemsFromAdmin(items);
+        } else {
+            console.log('Nenhum item encontrado');
+        }
+    } catch (error) {
+        console.error('Erro ao carregar itens do menu:', error);
+        // Fallback para localStorage
+        const adminMenuItems = localStorage.getItem('menuItems');
+        if (adminMenuItems) {
+            const items = JSON.parse(adminMenuItems);
+            updateMenuItemsFromAdmin(items);
+        }
     }
 }
 
 // Atualizar itens do menu no site principal
 function updateMenuItemsFromAdmin(items) {
+    console.log('Atualizando itens do menu:', items);
+    
+    // Limpar containers primeiro para remover itens estáticos
+    const containers = [
+        { selector: '#pasteis .items-grid', category: 'pasteis' },
+        { selector: '#combos .combo-grid', category: 'combos' },
+        { selector: '#bebidas .items-grid', category: 'bebidas' },
+        { selector: '#destaques .highlights-grid', category: 'destaques' }
+    ];
+    
+    // Limpar todos os containers
+    containers.forEach(({ selector, category }) => {
+        const container = document.querySelector(selector);
+        if (container) {
+            container.innerHTML = '';
+        }
+    });
+    
+    // Limpar categorias estáticas também
+    const categories = document.querySelectorAll('#pasteis .category, #bebidas .category');
+    categories.forEach(category => {
+        // Manter apenas o h3, remover o conteúdo
+        const h3 = category.querySelector('h3');
+        category.innerHTML = '';
+        if (h3) {
+            category.appendChild(h3);
+        }
+    });
+    
+    // Limpar especificamente categorias estáticas de pastéis
+    const pasteisCategories = document.querySelectorAll('#pasteis .category');
+    pasteisCategories.forEach(category => {
+        const h3 = category.querySelector('h3');
+        if (h3 && h3.textContent.includes('CATUPIRY')) {
+            // Remover completamente a categoria Catupiry
+            category.remove();
+        } else {
+            // Limpar outras categorias mantendo apenas o h3
+            const grid = category.querySelector('.items-grid');
+            if (grid) {
+                grid.innerHTML = '';
+            }
+        }
+    });
+    
     // Atualizar pastéis
     const pasteisItems = items.filter(item => item.category === 'pasteis');
-    const pasteisContainer = document.querySelector('#pasteis .menu-items');
+    let pasteisContainer = document.querySelector('#pasteis .items-grid');
+    
+    // Se não encontrar, criar um novo container
+    if (!pasteisContainer) {
+        const pasteisSection = document.querySelector('#pasteis');
+        if (pasteisSection) {
+            // Criar categoria se não existir
+            let category = pasteisSection.querySelector('.category');
+            if (!category) {
+                category = document.createElement('div');
+                category.className = 'category';
+                category.innerHTML = '<h3>PASTÉIS</h3>';
+                pasteisSection.appendChild(category);
+            }
+            
+            // Criar grid se não existir
+            pasteisContainer = document.createElement('div');
+            pasteisContainer.className = 'items-grid';
+            category.appendChild(pasteisContainer);
+        }
+    }
+    
     if (pasteisContainer) {
-        pasteisContainer.innerHTML = '';
-        pasteisItems.forEach(item => {
-            pasteisContainer.innerHTML += `
-                <div class="menu-item" data-name="${item.name}" data-price="${item.price}">
-                    <div class="item-info">
-                        <h3>${item.name}</h3>
-                        <p class="item-description">${item.description || ''}</p>
-                        <p class="item-price">R$ ${item.price.toFixed(2).replace('.', ',')}</p>
+        if (pasteisItems.length === 0) {
+            pasteisContainer.innerHTML = '<p class="no-items">Nenhum item encontrado nesta categoria.</p>';
+        } else {
+            pasteisItems.forEach(item => {
+                pasteisContainer.innerHTML += `
+                    <div class="menu-item" data-name="${item.name}" data-price="${item.price}">
+                        <div class="item-info">
+                            <h3>${item.name}</h3>
+                            <p class="item-description">${item.description || ''}</p>
+                            <p class="item-price">R$ ${item.price.toFixed(2).replace('.', ',')}</p>
+                        </div>
+                        <div class="item-quantity">
+                            <button class="minus">-</button>
+                            <span class="quantity">0</span>
+                            <button class="plus">+</button>
+                        </div>
+                        <button class="btn-add">Adicionar</button>
                     </div>
-                    <div class="item-quantity">
-                        <button class="minus">-</button>
-                        <span class="quantity">0</span>
-                        <button class="plus">+</button>
-                    </div>
-                    <button class="btn-add">Adicionar</button>
-                </div>
-            `;
-        });
+                `;
+            });
+        }
     }
     
     // Atualizar combos
     const combosItems = items.filter(item => item.category === 'combos');
-    const combosContainer = document.querySelector('#combos .menu-items');
+    const combosContainer = document.querySelector('#combos .combo-grid');
     if (combosContainer) {
-        combosContainer.innerHTML = '';
-        combosItems.forEach(item => {
-            combosContainer.innerHTML += `
-                <div class="combo-item" data-name="${item.name}" data-price="${item.price}">
-                    <div class="item-info">
-                        <h3>${item.name}</h3>
-                        <p class="item-description">${item.description || ''}</p>
-                        <p class="item-price">R$ ${item.price.toFixed(2).replace('.', ',')}</p>
+        if (combosItems.length === 0) {
+            combosContainer.innerHTML = '<p class="no-items">Nenhum item encontrado nesta categoria.</p>';
+        } else {
+            combosItems.forEach(item => {
+                combosContainer.innerHTML += `
+                    <div class="combo-item" data-name="${item.name}" data-price="${item.price}">
+                        <div class="combo-info">
+                            <h3>${item.name}</h3>
+                            <p class="combo-description">${item.description || ''}</p>
+                            <p class="combo-price">R$ ${item.price.toFixed(2).replace('.', ',')}</p>
+                        </div>
+                        <div class="item-quantity">
+                            <button class="minus">-</button>
+                            <span class="quantity">0</span>
+                            <button class="plus">+</button>
+                        </div>
+                        <button class="btn-add">Adicionar</button>
                     </div>
-                    <div class="item-quantity">
-                        <button class="minus">-</button>
-                        <span class="quantity">0</span>
-                        <button class="plus">+</button>
-                    </div>
-                    <button class="btn-add">Adicionar</button>
-                </div>
-            `;
-        });
+                `;
+            });
+        }
     }
     
     // Atualizar bebidas
     const bebidasItems = items.filter(item => item.category === 'bebidas');
-    const bebidasContainer = document.querySelector('#bebidas .menu-items');
+    const bebidasContainer = document.querySelector('#bebidas .items-grid');
     if (bebidasContainer) {
-        bebidasContainer.innerHTML = '';
-        bebidasItems.forEach(item => {
-            bebidasContainer.innerHTML += `
-                <div class="menu-item" data-name="${item.name}" data-price="${item.price}">
-                    <div class="item-info">
-                        <h3>${item.name}</h3>
-                        <p class="item-description">${item.description || ''}</p>
-                        <p class="item-price">R$ ${item.price.toFixed(2).replace('.', ',')}</p>
+        if (bebidasItems.length === 0) {
+            bebidasContainer.innerHTML = '<p class="no-items">Nenhum item encontrado nesta categoria.</p>';
+        } else {
+            bebidasItems.forEach(item => {
+                bebidasContainer.innerHTML += `
+                    <div class="menu-item" data-name="${item.name}" data-price="${item.price}">
+                        <div class="item-info">
+                            <h3>${item.name}</h3>
+                            <p class="item-description">${item.description || ''}</p>
+                            <p class="item-price">R$ ${item.price.toFixed(2).replace('.', ',')}</p>
+                        </div>
+                        <div class="item-quantity">
+                            <button class="minus">-</button>
+                            <span class="quantity">0</span>
+                            <button class="plus">+</button>
+                        </div>
+                        <button class="btn-add">Adicionar</button>
                     </div>
-                    <div class="item-quantity">
-                        <button class="minus">-</button>
-                        <span class="quantity">0</span>
-                        <button class="plus">+</button>
-                    </div>
-                    <button class="btn-add">Adicionar</button>
-                </div>
-            `;
-        });
+                `;
+            });
+        }
     }
     
     // Atualizar destaques
     const destaquesItems = items.filter(item => item.category === 'destaques');
     const destaquesContainer = document.querySelector('#destaques .highlights-grid');
     if (destaquesContainer) {
-        destaquesContainer.innerHTML = '';
-        destaquesItems.forEach(item => {
-            destaquesContainer.innerHTML += `
-                <div class="highlight-item" data-name="${item.name}" data-price="${item.price}">
-                    <h3>${item.name}</h3>
-                    <p class="highlight-description">${item.description || ''}</p>
-                    <p class="highlight-price">R$ ${item.price.toFixed(2).replace('.', ',')}</p>
-                    <button class="btn-add-to-cart">Adicionar ao Carrinho</button>
-                </div>
-            `;
-        });
+        if (destaquesItems.length === 0) {
+            destaquesContainer.innerHTML = '<p class="no-items">Nenhum item encontrado nesta categoria.</p>';
+        } else {
+            destaquesItems.forEach(item => {
+                destaquesContainer.innerHTML += `
+                    <div class="highlight-item" data-name="${item.name}" data-price="${item.price}">
+                        <h3>${item.name}</h3>
+                        <p class="highlight-description">${item.description || ''}</p>
+                        <p class="highlight-price">R$ ${item.price.toFixed(2).replace('.', ',')}</p>
+                        <button class="btn-add-to-cart">Adicionar ao Carrinho</button>
+                    </div>
+                `;
+            });
+        }
     }
     
     // Recarregar event listeners
     setupEventListeners();
+    
+    // Mostrar notificação de atualização (opcional)
+    showUpdateNotification('Cardápio atualizado com sucesso!');
+}
+
+// Mostrar notificação de atualização
+function showUpdateNotification(message) {
+    const notification = document.createElement('div');
+    notification.className = 'update-notification';
+    notification.textContent = message;
+    notification.style.cssText = `
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        background: #28a745;
+        color: white;
+        padding: 1rem 1.5rem;
+        border-radius: 8px;
+        z-index: 10000;
+        font-weight: 600;
+        animation: slideIn 0.3s ease;
+    `;
+    
+    document.body.appendChild(notification);
+    
+    // Remover notificação após 3 segundos
+    setTimeout(() => {
+        if (notification.parentNode) {
+            notification.parentNode.removeChild(notification);
+        }
+    }, 3000);
 }
 
 // Carregar dados do cliente salvos
-function loadCustomerData() {
+async function loadCustomerData() {
     const savedCustomerData = localStorage.getItem('customerData');
     if (savedCustomerData) {
         const customerData = JSON.parse(savedCustomerData);
@@ -155,18 +365,32 @@ function loadCustomerData() {
     }
     
     // Carregar número do WhatsApp no header
-    loadWhatsAppInHeader();
+    await loadWhatsAppInHeader();
 }
 
 // Carregar número do WhatsApp no header
-function loadWhatsAppInHeader() {
-    const savedWhatsApp = localStorage.getItem('whatsappNumber');
-    if (savedWhatsApp) {
-        const headerPhone = document.getElementById('header-phone');
-        if (headerPhone) {
-            // Formatar número para exibição
-            const formatted = formatPhoneNumber(savedWhatsApp);
-            headerPhone.textContent = formatted;
+async function loadWhatsAppInHeader() {
+    try {
+        // Tentar carregar do Supabase primeiro
+        if (window.supabaseService && window.supabaseService.initialized) {
+            const whatsappNumber = await supabaseService.getSetting('whatsapp_number');
+            if (whatsappNumber) {
+                updateWhatsAppNumber(whatsappNumber);
+                return;
+            }
+        }
+        
+        // Fallback para localStorage
+        const savedWhatsApp = localStorage.getItem('whatsappNumber');
+        if (savedWhatsApp) {
+            updateWhatsAppNumber(savedWhatsApp);
+        }
+    } catch (error) {
+        console.error('Erro ao carregar WhatsApp:', error);
+        // Fallback para localStorage
+        const savedWhatsApp = localStorage.getItem('whatsappNumber');
+        if (savedWhatsApp) {
+            updateWhatsAppNumber(savedWhatsApp);
         }
     }
 }
@@ -200,6 +424,12 @@ function setupEventListeners() {
     console.log('Configurando event listeners...');
     console.log('Botão de carrinho:', cartBtn);
     console.log('Botão de fechar carrinho:', closeCartBtn);
+    
+    // Evitar adicionar listeners múltiplas vezes
+    if (window.eventListenersSetup) {
+        console.log('Event listeners já configurados');
+        return;
+    }
     
     // Carrinho
     cartBtn.addEventListener('click', function() {
@@ -238,73 +468,76 @@ function setupEventListeners() {
         });
     });
     
-    // Ações (cardápio + carrinho)
-    document.addEventListener('click', (e) => {
-        const plusBtn = e.target.closest('button.plus');
-        const minusBtn = e.target.closest('button.minus');
-        const addBtn = e.target.closest('button.btn-add');
-        const addToCartBtn = e.target.closest('button.btn-add-to-cart');
-        const removeAllBtn = e.target.closest('button.cart-item-remove');
- 
-        // Finalizar pedido
-        if (e.target === checkoutBtn || e.target.closest('#checkout-whatsapp')) {
-            checkout();
-            return;
-        }
- 
-        // Lixeira do carrinho: remove todos os itens iguais
-        if (removeAllBtn) {
-            const cartItemEl = removeAllBtn.closest('.cart-item');
-            const name = cartItemEl?.dataset?.name;
-            if (name) {
-                removeAllFromCartByName(name);
+    // Ações (cardápio + carrinho) - usar delegação de eventos única
+    if (!window.mainClickListenerAdded) {
+        document.addEventListener('click', async (e) => {
+            const plusBtn = e.target.closest('button.plus');
+            const minusBtn = e.target.closest('button.minus');
+            const addBtn = e.target.closest('button.btn-add');
+            const addToCartBtn = e.target.closest('button.btn-add-to-cart');
+            const removeAllBtn = e.target.closest('button.cart-item-remove');
+     
+            // Finalizar pedido
+            if (e.target === checkoutBtn || e.target.closest('#checkout-whatsapp')) {
+                await checkout();
+                return;
             }
-            return;
-        }
- 
-        // Botões +/- dentro do carrinho: alteram o carrinho
-        if (plusBtn || minusBtn) {
-            const cartItemEl = (plusBtn || minusBtn).closest('.cart-item');
-            if (cartItemEl) {
-                const name = cartItemEl.dataset?.name;
+     
+            // Lixeira do carrinho: remove todos os itens iguais
+            if (removeAllBtn) {
+                const cartItemEl = removeAllBtn.closest('.cart-item');
+                const name = cartItemEl?.dataset?.name;
                 if (name) {
-                    if (plusBtn) changeCartItemQuantityByName(name, +1);
-                    if (minusBtn) changeCartItemQuantityByName(name, -1);
+                    removeAllFromCartByName(name);
                 }
                 return;
             }
- 
-            // Botões +/- no cardápio: apenas mudam a quantidade exibida
-            const menuItemEl = (plusBtn || minusBtn).closest('.menu-item, .combo-item');
-            if (menuItemEl) {
-                updateMenuDisplayedQuantity(menuItemEl, plusBtn ? +1 : -1);
-            }
-            return;
-        }
- 
-        // Botão "Adicionar" (cardápio): adiciona a quantidade selecionada
-        if (addBtn) {
-            const menuItemEl = addBtn.closest('.menu-item, .combo-item');
-            const qty = getMenuDisplayedQuantity(menuItemEl);
-            if (!qty) {
-                showNotification('Selecione a quantidade antes de adicionar.', 'error');
+     
+            // Botões +/- dentro do carrinho: alteram o carrinho
+            if (plusBtn || minusBtn) {
+                const cartItemEl = (plusBtn || minusBtn).closest('.cart-item');
+                if (cartItemEl) {
+                    const name = cartItemEl.dataset?.name;
+                    if (name) {
+                        if (plusBtn) changeCartItemQuantityByName(name, +1);
+                        if (minusBtn) changeCartItemQuantityByName(name, -1);
+                    }
+                    return;
+                }
+     
+                // Botões +/- no cardápio: apenas mudam a quantidade exibida
+                const menuItemEl = (plusBtn || minusBtn).closest('.menu-item, .combo-item');
+                if (menuItemEl) {
+                    updateMenuDisplayedQuantity(menuItemEl, plusBtn ? +1 : -1);
+                }
                 return;
             }
-            addToCart(menuItemEl, qty);
-            setMenuDisplayedQuantity(menuItemEl, 0);
-            return;
-        }
- 
-        // Botão "Adicionar ao Carrinho" (destaques): adiciona 1 unidade
-        if (addToCartBtn) {
-            const highlightEl = addToCartBtn.closest('.highlight-item');
-            if (highlightEl) {
-                addToCart(highlightEl, 1);
+     
+            // Botão "Adicionar" (cardápio): adiciona a quantidade selecionada
+            if (addBtn) {
+                const menuItemEl = addBtn.closest('.menu-item, .combo-item');
+                const qty = getMenuDisplayedQuantity(menuItemEl);
+                if (!qty) {
+                    showNotification('Selecione a quantidade antes de adicionar.', 'error');
+                    return;
+                }
+                addToCart(menuItemEl, qty);
+                setMenuDisplayedQuantity(menuItemEl, 0);
+                return;
             }
-        }
-    });
+     
+            // Botão "Adicionar ao Carrinho" (destaques)
+            if (addToCartBtn) {
+                const highlightItemEl = addToCartBtn.closest('.highlight-item');
+                addToCart(highlightItemEl, 1);
+                return;
+            }
+        });
+        
+        window.mainClickListenerAdded = true;
+    }
     
-    // Salvar alterações nos preços
+    // Event listeners para edição de preços (modo admin)
     document.addEventListener('blur', (e) => {
         if (e.target.classList.contains('item-price') && editMode) {
             saveMenuItems();
@@ -336,6 +569,9 @@ function setupEventListeners() {
             selection.addRange(range);
         }
     });
+    
+    window.eventListenersSetup = true;
+    console.log('Event listeners configurados com sucesso');
 }
 
 // Alternar o modo de edição
@@ -564,7 +800,7 @@ function loadCart() {
 }
 
 // Finalizar pedido via WhatsApp
-function checkout() {
+async function checkout() {
     if (cart.length === 0) {
         showNotification('Adicione itens ao carrinho primeiro!', 'error');
         return;
@@ -653,11 +889,54 @@ function checkout() {
     // Abrir WhatsApp com a mensagem
     window.open(`https://wa.me/${phoneNumber}?text=${encodedMessage}`, '_blank');
     
+    // Salvar pedido no Supabase
+    await saveOrderToSupabase(customerData, message, total, selectedPaymentMethod);
+    
     // Limpar carrinho após o pedido
     cart = [];
     saveCart();
     updateCartUI();
     toggleCart();
+}
+
+// Salvar pedido no Supabase
+async function saveOrderToSupabase(customerData, message, total, paymentMethod) {
+    try {
+        // Verificar se o Supabase está disponível
+        if (window.supabaseService && window.supabaseService.initialized) {
+            console.log('Salvando pedido no Supabase...');
+            
+            const orderData = {
+                customer_name: customerData.name,
+                customer_phone: customerData.phone,
+                customer_address: customerData.address,
+                customer_neighborhood: customerData.neighborhood,
+                customer_reference: customerData.reference || '',
+                customer_observations: customerData.observations || '',
+                items: cart.map(item => ({
+                    name: item.name,
+                    price: item.price,
+                    quantity: item.quantity,
+                    description: item.description || ''
+                })),
+                total_amount: total,
+                delivery_fee: 5.00, // Taxa de entrega padrão
+                payment_method: paymentMethod || '',
+                status: 'pending',
+                whatsapp_message: message
+            };
+            
+            const savedOrder = await supabaseService.createOrder(orderData);
+            console.log('Pedido salvo no Supabase:', savedOrder);
+            showNotification('Pedido salvo com sucesso! ID: ' + savedOrder.id, 'success');
+        } else {
+            console.log('Supabase não disponível, pedido não salvo no banco');
+            showNotification('Pedido enviado para WhatsApp, mas não foi salvo no sistema', 'warning');
+        }
+    } catch (error) {
+        console.error('Erro ao salvar pedido no Supabase:', error);
+        showNotification('Erro ao salvar pedido no sistema', 'error');
+    }
 }
 
 // Toggle para expandir/recolher dados de entrega

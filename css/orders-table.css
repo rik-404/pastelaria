@@ -1,0 +1,285 @@
+/* Estilos para a tabela de pedidos */
+.orders-table {
+    width: 100%;
+    background: white;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.orders-table thead {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+}
+
+.orders-table th {
+    padding: 1rem;
+    text-align: left;
+    font-weight: 600;
+    font-size: 0.9rem;
+    border: none;
+}
+
+.orders-table tbody tr {
+    border-bottom: 1px solid #f0f0f0;
+    transition: background-color 0.3s ease;
+}
+
+.orders-table tbody tr:hover {
+    background-color: #f8f9fa;
+}
+
+.orders-table td {
+    padding: 1rem;
+    vertical-align: middle;
+    border: none;
+}
+
+.orders-table td:first-child {
+    font-weight: 600;
+    color: #667eea;
+}
+
+/* Status badges */
+.status-badge {
+    padding: 0.4rem 0.8rem;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.status-pending {
+    background: #fff3cd;
+    color: #856404;
+    border: 1px solid #ffeaa7;
+}
+
+.status-confirmed {
+    background: #d1f2eb;
+    color: #0984e3;
+    border: 1px solid #74b9ff;
+}
+
+.status-preparing {
+    background: #fef5e7;
+    color: #f39c12;
+    border: 1px solid #f6c23e;
+}
+
+.status-ready {
+    background: #e8f5e8;
+    color: #27ae60;
+    border: 1px solid #2ecc71;
+}
+
+.status-delivering {
+    background: #e3f2fd;
+    color: #1976d2;
+    border: 1px solid #64b5f6;
+}
+
+.status-delivered {
+    background: #d4edda;
+    color: #27ae60;
+    border: 1px solid #2ecc71;
+}
+
+.status-cancelled {
+    background: #fadbd8;
+    color: #e74c3c;
+    border: 1px solid #e17055;
+}
+
+/* Botões de ação */
+.btn-action {
+    background: #667eea;
+    color: white;
+    border: none;
+    padding: 0.5rem 0.8rem;
+    border-radius: 6px;
+    cursor: pointer;
+    margin-right: 0.3rem;
+    font-size: 0.75rem;
+    transition: all 0.3s ease;
+    white-space: nowrap;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    position: relative;
+}
+
+.btn-action:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(102, 126, 234, 0.3);
+}
+
+.btn-action:last-child {
+    margin-right: 0;
+}
+
+/* Botões desabilitados */
+.btn-action.disabled {
+    background: #6c757d !important;
+    color: #adb5bd !important;
+    cursor: not-allowed !important;
+    opacity: 0.6 !important;
+    transform: none !important;
+    box-shadow: none !important;
+}
+
+.btn-action.disabled:hover {
+    transform: none !important;
+    box-shadow: none !important;
+}
+
+.btn-action.disabled::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 6px;
+}
+
+/* Botão Confirmado */
+.btn-confirm {
+    background: linear-gradient(135deg, #0984e3 0%, #74b9ff 100%);
+    color: white;
+}
+
+.btn-confirm:hover {
+    background: linear-gradient(135deg, #74b9ff 0%, #0984e3 100%);
+    box-shadow: 0 4px 12px rgba(9, 132, 227, 0.4);
+}
+
+.btn-confirm.disabled {
+    background: #6c757d !important;
+    color: #adb5bd !important;
+}
+
+/* Botão Saiu para Entrega */
+.btn-delivering {
+    background: linear-gradient(135deg, #f39c12 0%, #f6c23e 100%);
+    color: white;
+}
+
+.btn-delivering:hover {
+    background: linear-gradient(135deg, #f6c23e 0%, #f39c12 100%);
+    box-shadow: 0 4px 12px rgba(243, 156, 18, 0.4);
+}
+
+.btn-delivering.disabled {
+    background: #6c757d !important;
+    color: #adb5bd !important;
+}
+
+/* Botão Entregue */
+.btn-delivered {
+    background: linear-gradient(135deg, #27ae60 0%, #2ecc71 100%);
+    color: white;
+}
+
+.btn-delivered:hover {
+    background: linear-gradient(135deg, #2ecc71 0%, #27ae60 100%);
+    box-shadow: 0 4px 12px rgba(39, 174, 96, 0.4);
+}
+
+.btn-delivered.disabled {
+    background: #6c757d !important;
+    color: #adb5bd !important;
+}
+
+/* Botão Cancelado */
+.btn-cancel {
+    background: linear-gradient(135deg, #e74c3c 0%, #e17055 100%);
+    color: white;
+}
+
+.btn-cancel:hover {
+    background: linear-gradient(135deg, #e17055 0%, #e74c3c 100%);
+    box-shadow: 0 4px 12px rgba(231, 76, 60, 0.4);
+}
+
+.btn-cancel.disabled {
+    background: #6c757d !important;
+    color: #adb5bd !important;
+}
+
+/* Botão de notificação especial */
+.btn-notification {
+    background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+    color: white;
+    border: none;
+    padding: 0.5rem 0.8rem;
+    border-radius: 6px;
+    cursor: pointer;
+    margin-right: 0.3rem;
+    font-size: 0.75rem;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    white-space: nowrap;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+}
+
+.btn-notification:hover {
+    background: linear-gradient(135deg, #f5576c 0%, #f093fb 100%);
+    transform: translateY(-2px) scale(1.05);
+    box-shadow: 0 4px 12px rgba(245, 87, 108, 0.4);
+}
+
+.btn-notification:active {
+    transform: translateY(0) scale(0.98);
+}
+
+.btn-notification i {
+    animation: pulse 2s infinite;
+}
+
+.btn-notification.disabled {
+    background: #6c757d !important;
+    color: #adb5bd !important;
+    cursor: not-allowed !important;
+    animation: none !important;
+}
+
+.btn-notification.disabled i {
+    animation: none !important;
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+    100% { transform: scale(1); }
+}
+
+/* Responsivo para botões */
+@media (max-width: 1200px) {
+    .btn-action {
+        padding: 0.4rem 0.6rem;
+        font-size: 0.7rem;
+        margin-right: 0.2rem;
+    }
+    
+    .btn-action span {
+        display: none;
+    }
+}
+
+@media (max-width: 768px) {
+    .btn-action {
+        padding: 0.3rem 0.5rem;
+        font-size: 0.65rem;
+        margin-right: 0.1rem;
+    }
+    
+    .btn-action i {
+        font-size: 0.8rem;
+    }
+}

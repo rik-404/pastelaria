@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teste Supabase</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        .status { padding: 10px; margin: 10px 0; border-radius: 5px; }
+        .success { background: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+        .error { background: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
+        .info { background: #d1ecf1; color: #0c5460; border: 1px solid #bee5eb; }
+    </style>
+</head>
+<body>
+    <h1>🧪 Teste de Conexão com Supabase</h1>
+    
+    <div id="status" class="info">Carregando...</div>
+    
+    <button onclick="testConnection()">Testar Conexão</button>
+    <button onclick="testCRUD()">Testar CRUD</button>
+    
+    <div id="results"></div>
+
+    <!-- SDK do Supabase -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    
+    <script>
+        // Configuração
+        const SUPABASE_CONFIG = {
+            url: 'https://cohrquhguscbagsuepsr.supabase.co',
+            anonKey: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNvaHJxdWhndXNjYmFnc3VlcHNyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjgxOTk3OTcsImV4cCI6MjA4Mzc3NTc5N30.csQ1BHaMOZdIGanVigl3cu2mhHAO8pVUZ6V7f0aRfk4'
+        };
+        
+        let supabase;
+        
+        // Inicializar
+        function init() {
+            try {
+                supabase = window.supabase.createClient(SUPABASE_CONFIG.url, SUPABASE_CONFIG.anonKey);
+                document.getElementById('status').innerHTML = '<div class="success">✅ SDK do Supabase carregado com sucesso!</div>';
+                console.log('Supabase inicializado:', supabase);
+            } catch (error) {
+                document.getElementById('status').innerHTML = '<div class="error">❌ Erro ao inicializar Supabase: ' + error.message + '</div>';
+                console.error('Erro ao inicializar Supabase:', error);
+            }
+        }
+        
+        // Testar conexão
+        async function testConnection() {
+            const results = document.getElementById('results');
+            results.innerHTML = '<div class="info">🔄 Testando conexão...</div>';
+            
+            try {
+                const { data, error } = await supabase.from('menu_items').select('count').limit(1);
+                
+                if (error) {
+                    results.innerHTML = '<div class="error">❌ Erro na conexão: ' + error.message + '</div>';
+                    console.error('Erro na conexão:', error);
+                } else {
+                    results.innerHTML = '<div class="success">✅ Conexão bem-sucedida! Tabela menu_items encontrada.</div>';
+                    console.log('Conexão bem-sucedida:', data);
+                }
+            } catch (error) {
+                results.innerHTML = '<div class="error">❌ Erro ao testar conexão: ' + error.message + '</div>';
+                console.error('Erro ao testar conexão:', error);
+            }
+        }
+        
+        // Testar CRUD
+        async function testCRUD() {
+            const results = document.getElementById('results');
+            results.innerHTML = '<div class="info">🔄 Testando operações CRUD...</div>';
+            
+            try {
+                // 1. INSERT
+                const { data: inserted, error: insertError } = await supabase
+                    .from('menu_items')
+                    .insert({
+                        name: 'Item de Teste',
+                        price: 15.90,
+                        category: 'pasteis',
+                        description: 'Item criado via teste'
+                    })
+                    .select()
+                    .single();
+                
+                if (insertError) throw insertError;
+                results.innerHTML += '<div class="success">✅ INSERT: Item criado com ID ' + inserted.id + '</div>';
+                
+                // 2. SELECT
+                const { data: items, error: selectError } = await supabase
+                    .from('menu_items')
+                    .select('*')
+                    .eq('id', inserted.id);
+                
+                if (selectError) throw selectError;
+                results.innerHTML += '<div class="success">✅ SELECT: Item encontrado: ' + items[0].name + '</div>';
+                
+                // 3. UPDATE
+                const { data: updated, error: updateError } = await supabase
+                    .from('menu_items')
+                    .update({ name: 'Item de Teste Atualizado' })
+                    .eq('id', inserted.id)
+                    .select()
+                    .single();
+                
+                if (updateError) throw updateError;
+                results.innerHTML += '<div class="success">✅ UPDATE: Item atualizado para "' + updated.name + '"</div>';
+                
+                // 4. DELETE
+                const { error: deleteError } = await supabase
+                    .from('menu_items')
+                    .delete()
+                    .eq('id', inserted.id);
+                
+                if (deleteError) throw deleteError;
+                results.innerHTML += '<div class="success">✅ DELETE: Item removido com sucesso</div>';
+                
+                results.innerHTML += '<div class="success"><strong>🎉 Todas as operações CRUD funcionaram perfeitamente!</strong></div>';
+                
+            } catch (error) {
+                results.innerHTML = '<div class="error">❌ Erro no CRUD: ' + error.message + '</div>';
+                console.error('Erro no CRUD:', error);
+            }
+        }
+        
+        // Inicializar ao carregar
+        window.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+</html>
