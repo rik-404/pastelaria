@@ -1,0 +1,684 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pastelaria Itoman - Cardápio Digital</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🥟</text></svg>">
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <div class="logo-container">
+                <img src="img/logo_v1659390701.jpeg" alt="Pastelaria Itoman" class="site-logo">
+                <div class="logo-text">
+                    <h1>Pastelaria Itoman</h1>
+                    <p class="slogan">Qualidade desde 1980</p>
+                    <p class="tagline">Pastéis frescos, crocantes e irresistíveis</p>
+                    <p class="contact-info">Piracicaba - SP | <i class="fas fa-phone"></i> (19) 99245-0000</p>
+                    <p class="delivery-info"><i class="fas fa-motorcycle"></i> Entregamos em toda região</p>
+                </div>
+            </div>
+            <!-- Botão de modo de edição removido -->
+        </div>
+        <nav class="categories-nav">
+            <div class="categories-nav-container">
+                <button class="category-btn active" data-category="destaques">Destaques</button>
+                <button class="category-btn" data-category="pasteis">Pastéis</button>
+                <button class="category-btn" data-category="bebidas">Bebidas</button>
+                <button class="category-btn" data-category="sobremesas">Sobremesas</button>
+                <button class="category-btn" data-category="combos">Combos</button>
+            </div>
+        </nav>
+
+        <!-- Seção Vantagens Itoman -->
+        <section class="benefits-section">
+            <div class="container">
+                <h2 class="section-title">Vantagens Itoman</h2>
+                <p class="section-subtitle">Quem valoriza a Itoman é valorizado</p>
+                
+                <div class="benefits-grid">
+                    <div class="benefit-card">
+                        <div class="benefit-icon">💬</div>
+                        <h3>Comentou nossa história?</h3>
+                        <p>Pode ganhar um brinde especial!</p>
+                    </div>
+                    
+                    <div class="benefit-card">
+                        <div class="benefit-icon">⭐</div>
+                        <h3>Deixou sua avaliação?</h3>
+                        <p>No Google ou Instagram? A gente lembra de você.</p>
+                    </div>
+                    
+                    <div class="benefit-card">
+                        <div class="benefit-icon">🎁</div>
+                        <h3>Pedidos acima de R$ 150</h3>
+                        <p>Recebem um mimo especial!</p>
+                        <div class="benefit-highlight">Mínimo: R$ 150.00</div>
+                    </div>
+                </div>
+                
+                <div class="how-it-works">
+                    <h3 class="how-it-works-title">Como Funciona</h3>
+                    <div class="steps">
+                        <div class="step">
+                            <div class="step-icon">📱</div>
+                            <p>Escolha seus produtos</p>
+                        </div>
+                        <div class="step-arrow">→</div>
+                        <div class="step">
+                            <div class="step-icon">🛒</div>
+                            <p>Confirme no WhatsApp</p>
+                        </div>
+                        <div class="step-arrow">→</div>
+                        <div class="step">
+                            <div class="step-icon">⏱️</div>
+                            <p>Mínimo 48h de antecedência</p>
+                        </div>
+                        <div class="step-arrow">→</div>
+                        <div class="step">
+                            <div class="step-icon">💳</div>
+                            <p>50% de entrada</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="delivery-info-section">
+                    <h3>Entrega</h3>
+                    <div class="delivery-details">
+                        <div class="delivery-option">
+                            <span class="delivery-icon">🚚</span>
+                            <div>
+                                <p class="delivery-title">Taxa de Entrega</p>
+                                <p class="delivery-price">R$ 5.00</p>
+                            </div>
+                        </div>
+                        <div class="delivery-option highlight">
+                            <span class="delivery-icon">🎁</span>
+                            <div>
+                                <p class="delivery-title">Grátis acima de</p>
+                                <p class="delivery-price">R$ 150.00</p>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="delivery-note">Delivery e Feiras Semanais</p>
+                </div>
+            </div>
+        </section>
+
+    <main>
+        <!-- Seção de Destaques -->
+        <section id="destaques" class="menu-section">
+            <h2><i class="fas fa-star"></i> DESTAQUES</h2>
+            <div class="highlights-grid">
+                <div class="highlight-item" style="background-image: url('https://images.unsplash.com/photo-1601050690597-df0568f70950?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80');">
+                    <div class="highlight-content">
+                        <h3>COMBO FAMÍLIA</h3>
+                        <p>4 Pastéis Grandes + 2 Refrigerantes 2L</p>
+                        <div class="highlight-price">R$ 99,90</div>
+                        <button class="btn-add-to-cart">Adicionar ao Carrinho</button>
+                    </div>
+                </div>
+                <div class="highlight-item" style="background-image: url('https://images.unsplash.com/photo-1603133872878-684f208fb84b?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80');">
+                    <div class="highlight-content">
+                        <h3>PASTEL DA CASA</h3>
+                        <p>Carne, queijo, tomate, milho e azeitona</p>
+                        <div class="highlight-price">R$ 18,90</div>
+                        <button class="btn-add-to-cart">Adicionar ao Carrinho</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Seção de Pastéis -->
+        <section id="pasteis" class="menu-section">
+            <h2><i class="fas fa-utensils"></i> PASTÉIS</h2>
+            
+            <div class="category">
+                <h3>PASTELÃO ESPECIAL CATUPIRY</h3>
+                <div class="items-grid">
+                    <!-- Item 1 -->
+                    <div class="menu-item" data-category="catupiry-original">
+                        <div class="item-header">
+                            <h4>Carne Especial</h4>
+                            <div class="item-price" contenteditable="false">R$ 33,99</div>
+                        </div>
+                        <p class="item-description">Carne moída, queijo, tomate, catupiry original e presunto</p>
+                        <div class="item-actions">
+                            <div class="item-quantity">
+                                <button class="quantity-btn minus">-</button>
+                                <span class="quantity">0</span>
+                                <button class="quantity-btn plus">+</button>
+                            </div>
+                            <button class="btn-add">Adicionar</button>
+                        </div>
+                    </div>
+
+                    <!-- Item 2 -->
+                    <div class="menu-item" data-category="catupiry-original">
+                        <div class="item-header">
+                            <h4>Frango Catupiry</h4>
+                            <div class="item-price" contenteditable="false">R$ 31,99</div>
+                        </div>
+                        <p class="item-description">Frango desfiado, catupiry original, milho e azeitona</p>
+                        <div class="item-actions">
+                            <div class="item-quantity">
+                                <button class="quantity-btn minus">-</button>
+                                <span class="quantity">0</span>
+                                <button class="quantity-btn plus">+</button>
+                            </div>
+                            <button class="btn-add">Adicionar</button>
+                        </div>
+                    </div>
+
+                    <!-- Item 3 -->
+                    <div class="menu-item" data-category="catupiry-tradicional">
+                        <div class="item-header">
+                            <h4>Pizza</h4>
+                            <div class="item-price" contenteditable="false">R$ 27,45</div>
+                        </div>
+                        <p class="item-description">Queijo, presunto, tomate, catupiry tradicional e orégano</p>
+                        <div class="item-actions">
+                            <div class="item-quantity">
+                                <button class="quantity-btn minus">-</button>
+                                <span class="quantity">0</span>
+                                <button class="quantity-btn plus">+</button>
+                            </div>
+                            <button class="btn-add">Adicionar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="category">
+                <h3>PASTÉIS TRADICIONAIS</h3>
+                <div class="items-grid">
+                    <!-- Itens tradicionais aqui -->
+                    <div class="menu-item">
+                        <div class="item-header">
+                            <h4>Carne</h4>
+                            <div class="item-price" contenteditable="false">R$ 12,90</div>
+                        </div>
+                        <p class="item-description">Carne moída temperada</p>
+                        <div class="item-actions">
+                            <div class="item-quantity">
+                                <button class="quantity-btn minus">-</button>
+                                <span class="quantity">0</span>
+                                <button class="quantity-btn plus">+</button>
+                            </div>
+                            <button class="btn-add">Adicionar</button>
+                        </div>
+                    </div>
+
+                    <div class="menu-item">
+                        <div class="item-header">
+                            <h4>Queijo</h4>
+                            <div class="item-price" contenteditable="false">R$ 10,90</div>
+                        </div>
+                        <p class="item-description">Queijo derretido</p>
+                        <div class="item-actions">
+                            <div class="item-quantity">
+                                <button class="quantity-btn minus">-</button>
+                                <span class="quantity">0</span>
+                                <button class="quantity-btn plus">+</button>
+                            </div>
+                            <button class="btn-add">Adicionar</button>
+                        </div>
+                    </div>
+
+                    <div class="menu-item">
+                        <div class="item-header">
+                            <h4>Frango</h4>
+                            <div class="item-price" contenteditable="false">R$ 11,90</div>
+                        </div>
+                        <p class="item-description">Frango desfiado temperado</p>
+                        <div class="item-actions">
+                            <div class="item-quantity">
+                                <button class="quantity-btn minus">-</button>
+                                <span class="quantity">0</span>
+                                <button class="quantity-btn plus">+</button>
+                            </div>
+                            <button class="btn-add">Adicionar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Seção de Bebidas -->
+        <section id="bebidas" class="menu-section">
+            <h2><i class="fas fa-wine-glass-alt"></i> BEBIDAS</h2>
+            <div class="items-grid">
+                <!-- Itens de bebidas aqui -->
+                <div class="menu-item">
+                    <div class="item-header">
+                        <h4>Refrigerante Lata</h4>
+                        <div class="item-price" contenteditable="false">R$ 5,50</div>
+                    </div>
+                    <p class="item-description">350ml - Coca-Cola, Guaraná, Fanta, etc.</p>
+                    <div class="item-actions">
+                        <div class="item-quantity">
+                            <button class="quantity-btn minus">-</button>
+                            <span class="quantity">0</span>
+                            <button class="quantity-btn plus">+</button>
+                        </div>
+                        <button class="btn-add">Adicionar</button>
+                    </div>
+                </div>
+
+                <div class="menu-item">
+                    <div class="item-header">
+                        <h4>Refrigerante 2L</h4>
+                        <div class="item-price" contenteditable="false">R$ 12,00</div>
+                    </div>
+                    <p class="item-description">2L - Coca-Cola, Guaraná, Fanta, etc.</p>
+                    <div class="item-actions">
+                        <div class="item-quantity">
+                            <button class="quantity-btn minus">-</button>
+                            <span class="quantity">0</span>
+                            <button class="quantity-btn plus">+</button>
+                        </div>
+                        <button class="btn-add">Adicionar</button>
+                    </div>
+                </div>
+
+                <div class="menu-item">
+                    <div class="item-header">
+                        <h4>Suco Natural</h4>
+                        <div class="item-price" contenteditable="false">R$ 7,50</div>
+                    </div>
+                    <p class="item-description">500ml - Laranja, Abacaxi, Maracujá</p>
+                    <div class="item-actions">
+                        <div class="item-quantity">
+                            <button class="quantity-btn minus">-</button>
+                            <span class="quantity">0</span>
+                            <button class="quantity-btn plus">+</button>
+                        </div>
+                        <button class="btn-add">Adicionar</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Seção de Combos -->
+        <section id="combos" class="menu-section">
+            <h2><i class="fas fa-box"></i> COMBOS</h2>
+            <div class="combo-grid">
+                <!-- Combo 1 -->
+                <div class="combo-item">
+                    <div class="combo-image" style="background-image: url('https://images.unsplash.com/photo-1568901346375-23c9450c58cd?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=699&q=80');">
+                        <div class="combo-tag">MAIS VENDIDO</div>
+                    </div>
+                    <div class="combo-content">
+                        <h3>COMBO DUPLO</h3>
+                        <ul class="combo-description">
+                            <li>2 Pastéis Especiais (Carne ou Frango)</li>
+                            <li>1 Refrigerante 2L</li>
+                            <li>10 Bananinhas</li>
+                        </ul>
+                        <div class="combo-price">
+                            <span class="original-price">R$ 85,90</span>
+                            <span class="discounted-price">R$ 69,90</span>
+                        </div>
+                        <div class="combo-actions">
+                            <div class="item-quantity">
+                                <button class="quantity-btn minus">-</button>
+                                <span class="quantity">0</span>
+                                <button class="quantity-btn plus">+</button>
+                            </div>
+                            <button class="btn-add">Adicionar</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Combo 2 -->
+                <div class="combo-item">
+                    <div class="combo-image" style="background-image: url('https://images.unsplash.com/photo-1565557623262-b51c2513a641?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1074&q=80');">
+                        <div class="combo-tag">LANCHE RÁPIDO</div>
+                    </div>
+                    <div class="combo-content">
+                        <h3>COMBO INDIVIDUAL</h3>
+                        <ul class="combo-description">
+                            <li>1 Pastel Especial (Carne ou Frango)</li>
+                            <li>1 Refrigerante Lata</li>
+                            <li>5 Bananinhas</li>
+                        </ul>
+                        <div class="combo-price">
+                            <span class="original-price">R$ 35,90</span>
+                            <span class="discounted-price">R$ 29,90</span>
+                        </div>
+                        <div class="combo-actions">
+                            <div class="item-quantity">
+                                <button class="quantity-btn minus">-</button>
+                                <span class="quantity">0</span>
+                                <button class="quantity-btn plus">+</button>
+                            </div>
+                            <button class="btn-add">Adicionar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <div class="cart-overlay">
+        <div class="cart">
+            <div class="cart-header">
+                <h3>Seu Pedido</h3>
+                <button class="close-cart">&times;</button>
+            </div>
+            <div class="cart-items">
+                <!-- Itens do carrinho serão adicionados aqui via JavaScript -->
+            </div>
+            <div class="cart-total">
+                <strong>Total: </strong><span id="cart-total">R$ 0,00</span>
+            </div>
+            <div class="cart-actions">
+                <div class="customer-info">
+                    <h4>Dados para Entrega</h4>
+                    <div class="customer-info-fields">
+                        <div class="field-group">
+                            <label for="customer-name">Nome:</label>
+                            <input type="text" id="customer-name" name="customer-name" placeholder="Seu nome completo" required>
+                        </div>
+                        <div class="field-group">
+                            <label for="customer-neighborhood">Bairro:</label>
+                            <select id="customer-neighborhood" name="customer-neighborhood" required>
+                                <option value="">Selecione seu bairro</option>
+                                <option value="Água Branca">Água Branca</option>
+                                <option value="Água Santa">Água Santa</option>
+                                <option value="Água Seca">Água Seca</option>
+                                <option value="Alemães">Alemães</option>
+                                <option value="Alphaville Piracicaba">Alphaville Piracicaba</option>
+                                <option value="Alto">Alto</option>
+                                <option value="Alto da Pompéia">Alto da Pompéia</option>
+                                <option value="Anhumas">Anhumas</option>
+                                <option value="Área Rural de Piracicaba">Área Rural de Piracicaba</option>
+                                <option value="Areião">Areião</option>
+                                <option value="Bongue">Bongue</option>
+                                <option value="Bosque dos Lenheiros">Bosque dos Lenheiros</option>
+                                <option value="Campestre">Campestre</option>
+                                <option value="Capim Fino">Capim Fino</option>
+                                <option value="Castelinho">Castelinho</option>
+                                <option value="CECAP">CECAP</option>
+                                <option value="Centro">Centro</option>
+                                <option value="Centro (Ártemis)">Centro (Ártemis)</option>
+                                <option value="Centro (Ibitiruna)">Centro (Ibitiruna)</option>
+                                <option value="Centro (Tupi)">Centro (Tupi)</option>
+                                <option value="Centro Comercial Agrícola Taquaral">Centro Comercial Agrícola Taquaral</option>
+                                <option value="Chácara Esperia">Chácara Esperia</option>
+                                <option value="Chácara Nazaré">Chácara Nazaré</option>
+                                <option value="Chácara São Jorge">Chácara São Jorge</option>
+                                <option value="Chácaras Água Branca">Chácaras Água Branca</option>
+                                <option value="Chicó">Chicó</option>
+                                <option value="Cidade Alta">Cidade Alta</option>
+                                <option value="Cidade Jardim">Cidade Jardim</option>
+                                <option value="Colinas do Piracicaba (Ártemis)">Colinas do Piracicaba (Ártemis)</option>
+                                <option value="Conceição">Conceição</option>
+                                <option value="Conceição II">Conceição II</option>
+                                <option value="Conjunto Habitacional Água Branca">Conjunto Habitacional Água Branca</option>
+                                <option value="Conjunto Residencial Mário Dedini">Conjunto Residencial Mário Dedini</option>
+                                <option value="Dois Córregos">Dois Córregos</option>
+                                <option value="Estância Lago Azul (Ártemis)">Estância Lago Azul (Ártemis)</option>
+                                <option value="Garças">Garças</option>
+                                <option value="Glebas Califórnia">Glebas Califórnia</option>
+                                <option value="Gran Park Residencial">Gran Park Residencial</option>
+                                <option value="Guamium">Guamium</option>
+                                <option value="Higienópolis">Higienópolis</option>
+                                <option value="Horto ( Tupi )">Horto ( Tupi )</option>
+                                <option value="Irmãos Camolesi">Irmãos Camolesi</option>
+                                <option value="Itaperu">Itaperu</option>
+                                <option value="Jaraguá">Jaraguá</option>
+                                <option value="Jardim Abaeté">Jardim Abaeté</option>
+                                <option value="Jardim Água Viva">Jardim Água Viva</option>
+                                <option value="Jardim Algodoal">Jardim Algodoal</option>
+                                <option value="Jardim Alvorada">Jardim Alvorada</option>
+                                <option value="Jardim Aman">Jardim Aman</option>
+                                <option value="Jardim Astúrias I">Jardim Astúrias I</option>
+                                <option value="Jardim Astúrias II">Jardim Astúrias II</option>
+                                <option value="Jardim Astúrias III">Jardim Astúrias III</option>
+                                <option value="Jardim Bartira (Tupi)">Jardim Bartira (Tupi)</option>
+                                <option value="Jardim Belvedere">Jardim Belvedere</option>
+                                <option value="Jardim Boa Esperança">Jardim Boa Esperança</option>
+                                <option value="Jardim Borghesi">Jardim Borghesi</option>
+                                <option value="Jardim Brasília">Jardim Brasília</option>
+                                <option value="Jardim Califórnia">Jardim Califórnia</option>
+                                <option value="Jardim Camargo">Jardim Camargo</option>
+                                <option value="Jardim Castor">Jardim Castor</option>
+                                <option value="Jardim Caxambu">Jardim Caxambu</option>
+                                <option value="Jardim Conceição">Jardim Conceição</option>
+                                <option value="Jardim Costa Rica">Jardim Costa Rica</option>
+                                <option value="Jardim Diamante">Jardim Diamante</option>
+                                <option value="Jardim Dona Luisa">Jardim Dona Luisa</option>
+                                <option value="Jardim dos Antúrios">Jardim dos Antúrios</option>
+                                <option value="Jardim dos Manacás">Jardim dos Manacás</option>
+                                <option value="Jardim Elite">Jardim Elite</option>
+                                <option value="Jardim Esplanada">Jardim Esplanada</option>
+                                <option value="Jardim Estoril">Jardim Estoril</option>
+                                <option value="Jardim Europa">Jardim Europa</option>
+                                <option value="Jardim Flamboyant">Jardim Flamboyant</option>
+                                <option value="Jardim Glória">Jardim Glória</option>
+                                <option value="Jardim Glória II">Jardim Glória II</option>
+                                <option value="Jardim Ibirapuera">Jardim Ibirapuera</option>
+                                <option value="Jardim Ipanema">Jardim Ipanema</option>
+                                <option value="Jardim Irapuã">Jardim Irapuã</option>
+                                <option value="Jardim Itaiçaba (Ártemis)">Jardim Itaiçaba (Ártemis)</option>
+                                <option value="Jardim Itamaracá">Jardim Itamaracá</option>
+                                <option value="Jardim Itamaraty">Jardim Itamaraty</option>
+                                <option value="Jardim Itapuã">Jardim Itapuã</option>
+                                <option value="Jardim Maria">Jardim Maria</option>
+                                <option value="Jardim Maria Claudia">Jardim Maria Claudia</option>
+                                <option value="Jardim Maria Helena">Jardim Maria Helena</option>
+                                <option value="Jardim Matilde II">Jardim Matilde II</option>
+                                <option value="Jardim Modelo">Jardim Modelo</option>
+                                <option value="Jardim Monumento">Jardim Monumento</option>
+                                <option value="Jardim Noiva da Colina">Jardim Noiva da Colina</option>
+                                <option value="Jardim Nova Iguaçu">Jardim Nova Iguaçu</option>
+                                <option value="Jardim Nova República">Jardim Nova República</option>
+                                <option value="Jardim Nova Suíça">Jardim Nova Suíça</option>
+                                <option value="Jardim Oriente">Jardim Oriente</option>
+                                <option value="Jardim Pacaembu">Jardim Pacaembu</option>
+                                <option value="Jardim Parque Jupiá">Jardim Parque Jupiá</option>
+                                <option value="Jardim Paulista">Jardim Paulista</option>
+                                <option value="Jardim Petrópolis">Jardim Petrópolis</option>
+                                <option value="Jardim Planalto">Jardim Planalto</option>
+                                <option value="Jardim Primavera">Jardim Primavera</option>
+                                <option value="Jardim Residencial Cambuy">Jardim Residencial Cambuy</option>
+                                <option value="Jardim Residencial Itabera">Jardim Residencial Itabera</option>
+                                <option value="Jardim Residencial Javary I">Jardim Residencial Javary I</option>
+                                <option value="Jardim Residencial Javary II">Jardim Residencial Javary II</option>
+                                <option value="Jardim Residencial Javary III">Jardim Residencial Javary III</option>
+                                <option value="Jardim Santa Ignês I">Jardim Santa Ignês I</option>
+                                <option value="Jardim Santa Ignês II">Jardim Santa Ignês II</option>
+                                <option value="Jardim Santa Isabel">Jardim Santa Isabel</option>
+                                <option value="Jardim Santa Silvia">Jardim Santa Silvia</option>
+                                <option value="Jardim São Francisco">Jardim São Francisco</option>
+                                <option value="Jardim São Jorge">Jardim São Jorge</option>
+                                <option value="Jardim São José">Jardim São José</option>
+                                <option value="Jardim São Luiz">Jardim São Luiz</option>
+                                <option value="Jardim São Paulo">Jardim São Paulo</option>
+                                <option value="Jardim Sol Nascente">Jardim Sol Nascente</option>
+                                <option value="Jardim Sol Nascente II">Jardim Sol Nascente II</option>
+                                <option value="Jardim Taiguara">Jardim Taiguara</option>
+                                <option value="Jardim Taiguara I">Jardim Taiguara I</option>
+                                <option value="Jardim Taruman">Jardim Taruman</option>
+                                <option value="Jardim Tatuapé">Jardim Tatuapé</option>
+                                <option value="Jardim Três Marias">Jardim Três Marias</option>
+                                <option value="Jupiá">Jupiá</option>
+                                <option value="Loteamento Chácaras Nazareth II">Loteamento Chácaras Nazareth II</option>
+                                <option value="Loteamento Distrito Industrial Uninorte">Loteamento Distrito Industrial Uninorte</option>
+                                <option value="Loteamento Humberto Venturini">Loteamento Humberto Venturini</option>
+                                <option value="Loteamento Ipanema">Loteamento Ipanema</option>
+                                <option value="Loteamento Irmãos Inforçato">Loteamento Irmãos Inforçato</option>
+                                <option value="Loteamento Jardim Colina Verde">Loteamento Jardim Colina Verde</option>
+                                <option value="Loteamento Jardim Monte Castelo">Loteamento Jardim Monte Castelo</option>
+                                <option value="Loteamento Jardim Santa Maria">Loteamento Jardim Santa Maria</option>
+                                <option value="Loteamento Kobayat Líbano">Loteamento Kobayat Líbano</option>
+                                <option value="Loteamento Residencial e Comercial Villa DAquila">Loteamento Residencial e Comercial Villa DAquila</option>
+                                <option value="Loteamento Residencial Gaivotas">Loteamento Residencial Gaivotas</option>
+                                <option value="Loteamento Residencial Reserva do Engenho">Loteamento Residencial Reserva do Engenho</option>
+                                <option value="Loteamento Residencial Santo Antônio II">Loteamento Residencial Santo Antônio II</option>
+                                <option value="Loteamento Santa Rosa">Loteamento Santa Rosa</option>
+                                <option value="Loteamento São Francisco">Loteamento São Francisco</option>
+                                <option value="Loteamento Vem Viver Piracicaba I">Loteamento Vem Viver Piracicaba I</option>
+                                <option value="Mário Dedini">Mário Dedini</option>
+                                <option value="Matão">Matão</option>
+                                <option value="Monte Alegre">Monte Alegre</option>
+                                <option value="Monte Líbano">Monte Líbano</option>
+                                <option value="Morato">Morato</option>
+                                <option value="Morumbi">Morumbi</option>
+                                <option value="Nhô Quim">Nhô Quim</option>
+                                <option value="Nossa Senhora de Fátima">Nossa Senhora de Fátima</option>
+                                <option value="Nova América">Nova América</option>
+                                <option value="Nova Piracicaba">Nova Piracicaba</option>
+                                <option value="Nova Pompéia">Nova Pompéia</option>
+                                <option value="Nova Suiça">Nova Suiça</option>
+                                <option value="Novo Horizonte">Novo Horizonte</option>
+                                <option value="Ondas">Ondas</option>
+                                <option value="Parque Água Branca">Parque Água Branca</option>
+                                <option value="Parque Bela Vista">Parque Bela Vista</option>
+                                <option value="Parque Chapadão">Parque Chapadão</option>
+                                <option value="Parque Conceição">Parque Conceição</option>
+                                <option value="Parque Conceição II">Parque Conceição II</option>
+                                <option value="Parque dos Sabiás">Parque dos Sabiás</option>
+                                <option value="Parque Nossa Senhora das Graças">Parque Nossa Senhora das Graças</option>
+                                <option value="Parque Orlanda I">Parque Orlanda I</option>
+                                <option value="Parque Orlanda II">Parque Orlanda II</option>
+                                <option value="Parque Orlanda III">Parque Orlanda III</option>
+                                <option value="Parque Peória (Tupi)">Parque Peória (Tupi)</option>
+                                <option value="Parque Primeiro de Maio">Parque Primeiro de Maio</option>
+                                <option value="Parque Residencial Monte Rey">Parque Residencial Monte Rey</option>
+                                <option value="Parque Residencial Monte Rey II">Parque Residencial Monte Rey II</option>
+                                <option value="Parque Residencial Monte Rey III">Parque Residencial Monte Rey III</option>
+                                <option value="Parque Residencial Piracicaba">Parque Residencial Piracicaba</option>
+                                <option value="Parque Residencial Piracicaba Balbo">Parque Residencial Piracicaba Balbo</option>
+                                <option value="Parque Santa Cecília">Parque Santa Cecília</option>
+                                <option value="Parque São Jorge">Parque São Jorge</option>
+                                <option value="Parque São Matheus">Parque São Matheus</option>
+                                <option value="Parque Taquaral">Parque Taquaral</option>
+                                <option value="Pau DAlhinho">Pau DAlhinho</option>
+                                <option value="Pau Queimado">Pau Queimado</option>
+                                <option value="Paulicéia">Paulicéia</option>
+                                <option value="Paulista">Paulista</option>
+                                <option value="Perdizes">Perdizes</option>
+                                <option value="Piracicamirim">Piracicamirim</option>
+                                <option value="Pompéia">Pompéia</option>
+                                <option value="Prezoto">Prezoto</option>
+                                <option value="Residencial Alto da Boa Vista">Residencial Alto da Boa Vista</option>
+                                <option value="Residencial Altos do Piracicaba">Residencial Altos do Piracicaba</option>
+                                <option value="Residencial Andorinhas">Residencial Andorinhas</option>
+                                <option value="Residencial Bela Vista">Residencial Bela Vista</option>
+                                <option value="Residencial Bertolucci">Residencial Bertolucci</option>
+                                <option value="Residencial Itaporanga">Residencial Itaporanga</option>
+                                <option value="Residencial Mont Carlo">Residencial Mont Carlo</option>
+                                <option value="Residencial Nova Água Branca II">Residencial Nova Água Branca II</option>
+                                <option value="Residencial Paineiras">Residencial Paineiras</option>
+                                <option value="Residencial Portal da Água Branca">Residencial Portal da Água Branca</option>
+                                <option value="Residencial Santo Antônio">Residencial Santo Antônio</option>
+                                <option value="Residencial Serra Verde">Residencial Serra Verde</option>
+                                <option value="Residencial Terras de Ártemis (Ártemis)">Residencial Terras de Ártemis (Ártemis)</option>
+                                <option value="Santa Olímpia">Santa Olímpia</option>
+                                <option value="Santa Rita">Santa Rita</option>
+                                <option value="Santa Rosa">Santa Rosa</option>
+                                <option value="Santa Rosa Ipês">Santa Rosa Ipês</option>
+                                <option value="Santa Terezinha">Santa Terezinha</option>
+                                <option value="Santana">Santana</option>
+                                <option value="São Dimas">São Dimas</option>
+                                <option value="São Jorge">São Jorge</option>
+                                <option value="São Judas">São Judas</option>
+                                <option value="São Luiz">São Luiz</option>
+                                <option value="Sertãozinho">Sertãozinho</option>
+                                <option value="Tanquinho (Guamium)">Tanquinho (Guamium)</option>
+                                <option value="Taquaral">Taquaral</option>
+                                <option value="Terra Nova">Terra Nova</option>
+                                <option value="Terras de Piracicaba">Terras de Piracicaba</option>
+                                <option value="Terras do Engenho">Terras do Engenho</option>
+                                <option value="Unileste">Unileste</option>
+                                <option value="Vale do Sol">Vale do Sol</option>
+                                <option value="Verde">Verde</option>
+                                <option value="Vila Belém">Vila Belém</option>
+                                <option value="Vila Bessy">Vila Bessy</option>
+                                <option value="Vila Cristina">Vila Cristina</option>
+                                <option value="Vila Fátima">Vila Fátima</option>
+                                <option value="Vila Independência">Vila Independência</option>
+                                <option value="Vila Industrial">Vila Industrial</option>
+                                <option value="Vila Monteiro">Vila Monteiro</option>
+                                <option value="Vila Nossa Senhora Aparecida">Vila Nossa Senhora Aparecida</option>
+                                <option value="Vila Nova">Vila Nova</option>
+                                <option value="Vila Pacaembu">Vila Pacaembu</option>
+                                <option value="Vila Rezende">Vila Rezende</option>
+                                <option value="Vila Sônia">Vila Sônia</option>
+                                <option value="Vivendas Bela Vista">Vivendas Bela Vista</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="payment-method">
+                    <h4>Forma de pagamento</h4>
+                    <div class="payment-method-options">
+                        <label class="payment-method-option">
+                            <input type="radio" name="payment-method" value="PIX" checked>
+                            <span>PIX</span>
+                        </label>
+                        <label class="payment-method-option">
+                            <input type="radio" name="payment-method" value="Cartão">
+                            <span>Cartão</span>
+                        </label>
+                        <label class="payment-method-option">
+                            <input type="radio" name="payment-method" value="Dinheiro">
+                            <span>Dinheiro</span>
+                        </label>
+                    </div>
+                </div>
+                <button id="checkout-whatsapp" class="whatsapp-btn">
+                    <i class="fab fa-whatsapp"></i> Finalizar Pedido via WhatsApp
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <button class="cart-btn">
+        <i class="fas fa-shopping-cart"></i>
+        <span class="cart-count">0</span>
+    </button>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3><i class="fas fa-utensils"></i> Pastelaria Itoman</h3>
+                <p>Os melhores pastéis da região, feitos com ingredientes frescos e selecionados.</p>
+                <div class="social-links">
+                    <a href="#" title="Facebook"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" title="Instagram"><i class="fab fa-instagram"></i></a>
+                    <a href="#" title="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+                </div>
+            </div>
+
+            <div class="footer-section">
+                <h3><i class="far fa-clock"></i> Horário de Funcionamento</h3>
+                <p><i class="far fa-clock"></i> Segunda a Sábado: 10h - 22h</p>
+                <p><i class="far fa-clock"></i> Domingo: 11h - 21h</p>
+                <p><i class="far fa-clock"></i> Feriados: 11h - 20h</p>
+            </div>
+
+            <div class="footer-section">
+                <h3><i class="fas fa-map-marker-alt"></i> Contato</h3>
+                <p><i class="fas fa-phone"></i> (19) 99999-9999</p>
+                <p><i class="fas fa-envelope"></i> contato@pastelariaitoman.com.br</p>
+                <p><i class="fas fa-map-marker-alt"></i> Rua Exemplo, 123 - Centro, Piracicaba/SP</p>
+            </div>
+        </div>
+
+        <div class="copyright">
+            &copy; 2024 Pastelaria Itoman. Todos os direitos reservados.
+        </div>
+    </footer>
+
+    <script src="js/script.js"></script>
+</body>
+</html>
